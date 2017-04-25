@@ -7,6 +7,22 @@ The general idea is to have a simple bash script that does all the fetching, clo
 
 For the moment it will contain all the instructions with command lines to setup manually everything and some configuration files (.vimrc, config.fish etc). Later on I'll try to create the script that will do everything by itself.
 
+## Table of Contents
+
+* [Installation](#installation)
+* [Basic dependecies](#basic-dependecies)
+    * [Fonts](#fonts)
+* [NVM](#node-version-manager)
+* [Fish](#fish-shell)
+* [NVM Fish wrapper](#nvm-fish-wrapper)
+* [Virtalfish](#virtualfish)
+* [VIm configuration](#vim-configuration)
+    * [Get Vundle](#get-vundle)
+    * [Update .vimrc](#update-vimrc)
+    * [Install vundle plugins](#install-vundle-plugins)
+* [Tilix](#tilix) terminal emulator
+* [TODO](#todo)
+
 ## Installation
 Until a script is available I will put all the installation instructions here. This section will be moved probably somewhere else later on, but for ease it'll stay here for now.
 
@@ -62,7 +78,7 @@ NVM Allows handling different versions of `nodejs` and relative npm easily
 
 Will install `nvm` and configure it for bash
 
-### Fish shell and oh-my-fish
+### Fish shell
 
 * [Fish shell website](https://fishshell.com/)
 * [Oh my fish repository](https://github.com/oh-my-fish/oh-my-fish)
@@ -80,11 +96,11 @@ $ chsh -s `which fish`
 ```
 If everything has been set properly the terminal should display correctly and fish be your default shell.
 
-### nvm fish wrapper
+### NVM fish wrapper
 Allows using nvm inside fish
 * [Repository](https://github.com/passcod/nvm-fish-wrapper)
 * [Documentation]()
-```b
+```
 $ ~> cd ~/.config/fish
 $ ~/.c/fish> git clone git://github.com/passcod/nvm-fish-wrapper.git nvm-wrapper
 ```
@@ -94,7 +110,7 @@ then edit `~/.config/fish/config.fish` and add
 
     source ~/.config/fish/nvm-wrapper/nvm.fish
 
-### Virtualfish (virtualenvwrapper for fish)
+### Virtualfish
 
 Fish wrapper for python virtualenvwrapper.
 * [Repository](https://github.com/adambrenecki/virtualfish)
@@ -114,11 +130,13 @@ Restart the sell and call `vf` to use it.
 ### VIm configuration
 
 Vim should be already installed with the initial `apt-get` for the dependecies,
-so what's left to be done is to clone `vundle`
+so what's left to be done is to 
+#### Get `vundle`
 
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-update `.vimrc` from the latest version on the repo
+#### update `.vimrc`
+from the latest version on the repo
 
     wget https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc -d ~/.vimrc
 
@@ -126,13 +144,13 @@ update `.vimrc` from the latest version on the repo
 
     cp ./configs/.vimrc ~/.vimrc
 
-Finally it's time to install the plugins with vundle
+#### Install vundle plugins
 
     sudo vim -c VundleUpdate -c quitall
 
 This may pull out some errors while processing due plugins missing but it's ok.
 
-After the process finishes installing and updating it's time to configure `YouCompleteMe`
+Configure `YouCompleteMe`
 with
 
     cd ~/.vim/bundle/YouCompleteMe
