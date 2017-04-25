@@ -139,12 +139,14 @@ sudo apt install tilix
   * [x] virtualfish (python virtualenvwrapper for fish)
   * [x] nvm (node virtual manager)
   * [x] [nvm-fish-wrapper](https://github.com/passcod/nvm-fish-wrapper)
-  * [ ] VirtualFish (python virtualenvwrapper)
+  * [x] VirtualFish (python virtualenvwrapper)
   * [x] tilix terminal emulator (ex terminix)
-  * [ ] Vim config instructions
-* [ ] Find all install instructions
+  * [x] Vim config instructions
+  * [ ] Instructions for VSCode
+    * [ ] add/configure extensions (sync-settings) from cli
+* [ ] Autoconfigure terminal profiles
 * [ ] Instructions on git setup (Github | Bitbucket ) && auto authenticate
 * [x] Define dependencies
 * [ ] setup microscript to fetch various `config`s from gists and set them up
 * [ ] Logically decide the steps
-* [ ] bash script or python?
+* [ ] Simple bash script to do everything (regardless of options)
