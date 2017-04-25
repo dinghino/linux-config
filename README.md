@@ -117,7 +117,36 @@ Restart the sell and call `vf` to use it.
 
 ### VIm configuration
 
-For now see [this gist](https://gist.github.com/dinghino/0f081500fdbb98b9db85a4cb3d3330b9) to properly setup vim
+Vim should be already installed with the initial `apt-get` for the dependecies,
+so what's left to be done is to clone `vundle`
+
+    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+
+update `.vimrc` from the latest version on the repo 
+
+    wget https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc -d ~/.vimrc
+
+**or** using the local version if you cloned the repository
+
+    cp ./configs/.vimrc ~/.vimrc
+
+Finally it's time to install the plugins with vundle
+
+    sudo vim -c VundleUpdate -c quitall
+
+This may pull out some errors while processing due plugins missing but it's ok.
+
+After the process finishes installing and updating it's time to configure `YouCompleteMe`
+with
+
+    cd ~/.vim/bundle/YouCompleteMe
+    sudo python3.6 -m ./install.py --clang-completer --tern-completer
+
+The install script get passed only CLang and tern parameters since we only have those
+installed at the moment. This could take a while but has a nice output that logs everything.
+
+* [YouCompleteMe documentation](http://valloric.github.io/YouCompleteMe/)
+* [Personal GIST with other info](https://gist.github.com/dinghino/0f081500fdbb98b9db85a4cb3d3330b9)
 
 
 ### Tilix
