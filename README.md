@@ -21,7 +21,7 @@ This section is a temporary storage for everything that will go into the script
 > **NOTE**
 > If on `16.10+` python3.6 is on the universe repositories and there is no need to add the repo. For older versions please add the ppa repository for python3.6
 >    ```
->    $ sudo add-apt-repository ppa:jonathonf/python-3.6
+>    $ sudo add-apt-repository ppa:jonathonf/python-3.6 -y
 >    ```
 
 Basic dependecies and utility programs that are needed to setup the environment and work. Some of those could be
@@ -71,7 +71,7 @@ Will install `nvm` and configure it for bash
 * [Fish shell website](https://fishshell.com/)
 * [Oh my fish repository](https://github.com/oh-my-fish/oh-my-fish)
 ```
-$ sudo add-apt-repository ppa:fish-shell/release-2
+$ sudo add-apt-repository ppa:fish-shell/release-2 -y
 $ sudo apt-get update
 $ sudo apt-get install fish
 
@@ -126,7 +126,7 @@ Tilix is an alternative terminal emulator that allows window splitting, tabs etc
 * [Repository](https://github.com/gnunn1/tilix)
 
 ```bash
-sudo add-apt-repository ppa:webupd8team/terminix
+sudo add-apt-repository ppa:webupd8team/terminix -y
 sudo apt update
 sudo apt install tilix
 ```
