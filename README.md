@@ -28,7 +28,7 @@ Basic dependecies and utility programs that are needed to setup the environment 
 installed by default on the system
 
     $ sudo apt-get update
-    $ sudo apt-get install git curl vim unzip python3.6 build-essential cmake python-dev python3-dev
+    $ sudo apt-get install git curl vim unzip python3.6 build-essential cmake python-dev python3-dev -y
 
 #### Fonts
 Also both `fish shell` and vim plugins require a patched font to properly work.
@@ -73,7 +73,7 @@ Will install `nvm` and configure it for bash
 ```
 $ sudo add-apt-repository ppa:fish-shell/release-2 -y
 $ sudo apt-get update
-$ sudo apt-get install fish
+$ sudo apt-get install fish -y
 
 # Install oh-my-fish and set agnoster theme
 $ curl -L https://get.oh-my.fish | fish
