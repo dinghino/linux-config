@@ -25,16 +25,20 @@ If on `16.10+` python3.6 is on the universe repositories and there is no need to
 ### Basic dependecies
 
     $ sudo apt-get update
-    $ sudo apt-get install git curl vim python3.6 build-essential cmake python-dev python3-dev
+    $ sudo apt-get install git curl vim python3.6 build-essential cmake python-dev python3-de
 
 ### **N**ode **V**irtual **M**anager
 
-    $ ~> git clone https://github.com/creationix/nvm.git ~/.nvm
-    $ ~> cd ~/.nvm
-    $ ~/.nvm> git checkout (git describe --abbrev=0 --tags)
-
+    $ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+Will install `nvm` and configure it for bash
 
 ### Fish shell and oh-my-fish
+
+> TODO: For fish to work correctly a powerline font needs to be installed and the terminal set to use them.
+> Options are
+> * [Powerline/fonts](https://github.com/powerline/fonts/)
+> * [Nerd Fonts](https://github.com/ryanoasis/nerd-font)
+> At the moment the reccommended font due to configs is `Inconsolata`
 
     $ sudo add-apt-repository ppa:fish-shell/release-2
     $ sudo apt-get update
@@ -57,17 +61,19 @@ then edit `~/.config/fish/config.fish` and add
 
 ### VIm configuration
 
-    
+For now see [this gist](https://gist.github.com/dinghino/0f081500fdbb98b9db85a4cb3d3330b9) to properly setup vim
 
 ## **TODO**
 
 * [x] Complete the first stub of the readme!
-* [ ] List all the stuff needed (and why)
-  * [ ] Fish + oh-my-fish
-  * [ ] virtualfish (python virtualenvwrapper for fish)
-  * [ ] nvm (node virtual manager)
-  * [ ] [nvm-fish-wrapper](https://github.com/passcod/nvm-fish-wrapper)
+* [ ] List all the stuff needed
+  * [ ] Patched fonts instructions
+  * [x] Fish + oh-my-fish
+  * [x] virtualfish (python virtualenvwrapper for fish)
+  * [x] nvm (node virtual manager)
+  * [x] [nvm-fish-wrapper](https://github.com/passcod/nvm-fish-wrapper)
+  * [ ] Vim config instructions
 * [ ] Find all install instructions
-* [ ] Define dependencies
+* [x] Define dependencies
 * [ ] Logically decide the steps
 * [ ] bash script or python?
