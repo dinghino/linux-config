@@ -6,9 +6,13 @@ This would include `git`, `fish` shell, `powerline fonts`, `tilix`, `vim` with p
 
 The idea is to have a simple script - probably bash - that will do the wget or curl, launch the install script if needed, configure stuff in the system etc all by itself, allowing a _one command rule them all_ to ease up the system installation.
 
+## Currently available
+
+Current installation and configuration is available at at [this](https://gist.github.com/dinghino/0f081500fdbb98b9db85a4cb3d3330b9) gist, but is only for **VIm** setup on an already almost-configured system that relies on fish, python3.6 installed on the system, a configured terminal emulator (tilix/terminal) and nerd fonts (Inconsolata).
+
 ## TODO
 
-* [ ] Complete the first stub of the readme!
+* [x] Complete the first stub of the readme!
 * [ ] List all the stuff needed (and why)
 * [ ] Find all install instructions
 * [ ] Define dependencies
