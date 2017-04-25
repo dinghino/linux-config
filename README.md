@@ -18,7 +18,8 @@ This section is a temporary storage for everything that will go into the script
 
 ### Basic dependecies
 
-> NOTE If on `16.10+` python3.6 is on the universe repositories and there is no need to add the repo. For older versions please add the ppa repository for python3.6
+> **NOTE**
+> If on `16.10+` python3.6 is on the universe repositories and there is no need to add the repo. For older versions please add the ppa repository for python3.6
 >    ```
 >    $ sudo add-apt-repository ppa:jonathonf/python-3.6
 >    ```
@@ -142,6 +143,7 @@ sudo apt install tilix
   * [x] tilix terminal emulator (ex terminix)
   * [ ] Vim config instructions
 * [ ] Find all install instructions
+* [ ] Instructions on git setup (Github | Bitbucket ) && auto authenticate
 * [x] Define dependencies
 * [ ] setup microscript to fetch various `config`s from gists and set them up
 * [ ] Logically decide the steps
