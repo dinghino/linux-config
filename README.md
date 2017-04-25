@@ -150,3 +150,9 @@ sudo apt install tilix
 * [ ] setup microscript to fetch various `config`s from gists and set them up
 * [ ] Logically decide the steps
 * [ ] Simple bash script to do everything (regardless of options)
+
+
+## NOTE
+Section for various stuff and links that needs to be put _upstairs_
+
+* [Gnome keyring for git](https://askubuntu.com/questions/773455/what-is-the-correct-way-to-use-git-with-gnome-keyring-and-https-repos)
