@@ -1,20 +1,16 @@
-# Configuration program for linux system
+# One script to rule them all
 
-This will be a simple program that will allow me to setup a clear linux install with all the stuff I usually need to install manually.
+This project is for personal use but anyone can use it, clone it and whatever.
+It's role is to ease up the first setup on a new machine (debian based only, for now) allowing me to work easily with what I need, setup terminals, editors etc without caring too much on how it's done.
 
-This would include `git`, `fish` shell, `powerline fonts`, `tilix`, `vim` with plugins, themes for everything, gui programs that can be easily fetched and installed by terminal etc.
+The general idea is to have a simple bash script that does all the fetching, cloning, installing by itself for everything I usually need to install manually, providing a workspace ready without too much discomfort.
 
-The idea is to have a simple script - probably bash - that will do the wget or curl, launch the install script if needed, configure stuff in the system etc all by itself, allowing a _one command rule them all_ to ease up the system installation.
+For the moment it will contain all the instructions with command lines to setup manually everything and some configuration files (.vimrc, config.fish etc). Later on I'll try to create the script that will do everything by itself.
 
-## Currently available
-
-Current installation and configuration is available at at [this](https://gist.github.com/dinghino/0f081500fdbb98b9db85a4cb3d3330b9) gist, but is only for **VIm** setup on an already almost-configured system that relies on fish, python3.6 installed on the system, a configured terminal emulator (tilix/terminal) and nerd fonts (Inconsolata).
-
-## Manual installation
+## Installation
 Until a script is available I will put all the installation instructions here. This section will be moved probably somewhere else later on, but for ease it'll stay here for now.
 
 > Note that all the commands are for a debian distribution (Currently running Ubuntu 17.04 + Gnome 3) and are meant to work from the terminal.
-This section is a temporary storage for everything that will go into the script
 
 ### Basic dependecies
 
@@ -39,7 +35,7 @@ With `Visual Studio Code` synced config `Fira Code` is the default editor font a
 More on Fira Code can be found [here](https://github.com/tonsky/FiraCode).
 
 To install from command line just those two fonts:
- 
+
     mkdir /tmp/fonts/
     cd /tmp/fonts
     wget https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/Inconsolata.zip
@@ -49,7 +45,7 @@ To install from command line just those two fonts:
     # unzip the fonts inside the default fonts folder
     sudo unzip '*.zip' -d ~/.local/share/fonts
     sudo fc-cache -fv
-    
+
     # cleanup
     cd ..
     rm -rf ./fonts
@@ -100,11 +96,11 @@ then edit `~/.config/fish/config.fish` and add
 
 ### Virtualfish (virtualenvwrapper for fish)
 
-Fish wrapper for python virtualenvwrapper. 
+Fish wrapper for python virtualenvwrapper.
 * [Repository](https://github.com/adambrenecki/virtualfish)
 * [Documentation](http://virtualfish.readthedocs.org/en/latest/)
 
-To install 
+To install
 * `pip install virtualfish` with the system default python (2.7)
 * `python3.6 -m pip install virtualfish` to set the default python as python3.6
 
@@ -122,7 +118,7 @@ so what's left to be done is to clone `vundle`
 
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 
-update `.vimrc` from the latest version on the repo 
+update `.vimrc` from the latest version on the repo
 
     wget https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc -d ~/.vimrc
 
