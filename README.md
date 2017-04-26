@@ -21,6 +21,7 @@ For the moment it will contain all the instructions with command lines to setup 
     * [Update .vimrc](#update-vimrc)
     * [Install vundle plugins](#install-vundle-plugins)
 * [Tilix](#tilix) terminal emulator
+* [Visual Studio Code](#visualstudio-code)
 * [TODO](#todo)
 
 ## Installation
@@ -130,7 +131,7 @@ Restart the sell and call `vf` to use it.
 ### VIm configuration
 
 Vim should be already installed with the initial `apt-get` for the dependecies,
-so what's left to be done is to 
+so what's left to be done is to do is...
 #### Get `vundle`
 
     git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
@@ -180,6 +181,39 @@ found at `/configs/tilix.dconf`
 To load the configuration `dconf load /com/gexperts/Terminix/ < ./configs/tilix.dconf`
 to do a dump `dconf dump /com/gexperts/Terminix/ > ./configs/tilix.dconf` from the repo root folder.
 
+### VisualStudio Code
+
+* [Webiste](https://code.visualstudio.com/)
+* [Documentaion](https://code.visualstudio.com/docs/setup/linux) for installing
+* [Repository](https://github.com/Microsoft/vscode)
+
+To Quickly install _normally_ visit the webiste.
+
+Installing Visual Studio Code through terminal requires a few steps:
+
+```
+curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg
+sudo mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg
+sudo sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+```
+
+This gets the gpg key and adds the ppa repository to the source list. After that do an apt-get
+
+```
+sudo apt-get update
+sudo apt-get install code # or code-insiders
+```
+
+#### Installing extensions
+
+Visual studio code comes with extension support; one of them, `setting sync` allows to sync the setting through a [github gist](https://gist.github.com/dinghino/3434e8504e8fb7bf6960f075acd7aca3).
+It's possible to install the extension through terminal using
+
+    code --install-extension Shan.code-settings-sync
+
+Which, when vs code is launched the first time, will ask for the `gist id`, fetch the settings and the other extensions and install everything
+>>>>>>> update readme with vscode instructions
+
 ## **TODO**
 
 * [x] Complete the first stub of the readme!
@@ -193,6 +227,8 @@ to do a dump `dconf dump /com/gexperts/Terminix/ > ./configs/tilix.dconf` from t
   * [x] tilix terminal emulator (ex terminix)
   * [x] Vim config instructions
   * [ ] Instructions for VSCode
+    * [x] Basic vscode installation instructions
+    * [ ] Test & add to script
     * [ ] add/configure extensions (sync-settings) from cli
 * [ ] Autoconfigure terminal profiles
 * [ ] Instructions on git setup (Github | Bitbucket ) && auto authenticate
