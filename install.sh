@@ -28,7 +28,7 @@ sudo add-apt-repository ppa:webupd8team/terminix -y
 
 notify ='Installing dependecies...'
 sudo apt-get update
-sudo apt-get install git curl vim unzip python3.6 build-essential cmake python-dev python3-dev -y
+sudo apt-get install xsel git curl vim unzip python3.6 build-essential cmake python-dev python3-dev -y
 
 mkdir /tmp/fonts/
 cd /tmp/fonts/
@@ -76,6 +76,8 @@ git clone git://github.com/passcod/nvm-fish-wrapper.git nvm-wrapper
 # Add the source for nvm fish wrapper
 echo source ~/.config/fish/nvm-wrapper/nvm.fish >> ./config.fish
 
+# OhMyFish
+
 notify 'Installing Oh-My-Fish...'
 curl -L https://get.oh-my.fish
 # Create config.fish if it does not exists
@@ -83,11 +85,12 @@ if [ ! -f ./config.fish ];then
         touch ./config.fish
 fi
 
-# TODO: This dump of stuff inside config.fish will be removed, and the file
-# Will be recovered from the repo every time
 notify 'Installing VirtualFish...'
 python3.6 -m pip install virtualfish
 echo "eval(python3.6 -m virtualfish)" >> ./config.fish
+
+# TODO: This dump of stuff inside config.fish will be removed, and the file
+# Will be recovered from the repo every time
 
 ##############################
 #     VIM Configuration      #
