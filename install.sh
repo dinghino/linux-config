@@ -37,12 +37,31 @@ rm -rf ./fonts
 #############################
 notify 'Installing tilix...'
 sudo apt-get install tilix -y
+dconf load /com/gexeperts/Terminix/ < ./configs/tilix.dconf
 
 #############################
 #       NVM Install         #
 #############################
 notify 'Installing Node Version Manager...'
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+
+# TODO: This dump of stuff inside config.fish will be removed, and the file
+# Will be recovered from the repo every time
+
+##############################
+#     VIM Configuration      #
+##############################
+
+notify 'Configuring VIm...'
+notify '  Installing Vundle...'
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+notify '  Updating .vimrc file...'
+wget https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc -d ~/.vimrc
+notify '  Installing plugins...'
+vim +PluginInstall +qall
+notify '  Compiling YouCompleteMe plugin...\nit may take a while.'
+cd ~/.vim/bundle/YouCompleteMe
+sudo python3.6 -m ./install --clang-completer --tern-completer
 
 ##############################
 #   Installing Fish shell    #
@@ -70,8 +89,7 @@ notify 'Installing VirtualFish...'
 python3.6 -m pip install virtualfish
 echo "eval(python3.6 -m virtualfish)" >> ./config.fish
 
-# TODO: This dump of stuff inside config.fish will be removed, and the file
-# Will be recovered from the repo every time
+
 ##############################
 #     Finalize Fish setup    #
 ##############################
