@@ -226,10 +226,9 @@ Which, when vs code is launched the first time, will ask for the `gist id`, fetc
   * [x] VirtualFish (python virtualenvwrapper)
   * [x] tilix terminal emulator (ex terminix)
   * [x] Vim config instructions
-  * [ ] Instructions for VSCode
-    * [x] Basic vscode installation instructions
-    * [ ] Test & add to script
-    * [ ] add/configure extensions (sync-settings) from cli
+  * [x] Instructions for VSCode
+    * [x] Add/configure extensions (sync-settings) from cli
+    * [ ] Test cli commands
 * [ ] Autoconfigure terminal profiles
 * [ ] Instructions on git setup (Github | Bitbucket ) && auto authenticate
 * [x] Define dependencies
