@@ -173,6 +173,13 @@ sudo add-apt-repository ppa:webupd8team/terminix -y
 sudo apt update
 sudo apt install tilix
 ```
+
+Tilix also uses `dconf` to handle its configurations. The currently used config can be
+found at `/configs/tilix.dconf`
+
+To load the configuration `dconf load /com/gexperts/Terminix/ < ./configs/tilix.dconf`
+to do a dump `dconf dump /com/gexperts/Terminix/ > ./configs/tilix.dconf` from the repo root folder.
+
 ## **TODO**
 
 * [x] Complete the first stub of the readme!
