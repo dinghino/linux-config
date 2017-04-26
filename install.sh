@@ -9,7 +9,7 @@
 function notify {
     echo
     echo '======================================'
-    echo  >  $1
+    echo  "   ${1}"
     echo '======================================'
     echo
 }
@@ -45,9 +45,6 @@ dconf load /com/gexeperts/Terminix/ < ./configs/tilix.dconf
 notify 'Installing Node Version Manager...'
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 
-# TODO: This dump of stuff inside config.fish will be removed, and the file
-# Will be recovered from the repo every time
-
 ##############################
 #     VIM Configuration      #
 ##############################
@@ -70,13 +67,8 @@ sudo python3.6 -m ./install --clang-completer --tern-completer
 
 notify 'Installing fish shell...'
 sudo apt-get install fish -y
-notify 'Installing NVM Fish wrapper...'
-cd ~/.config/fish
-git clone git://github.com/passcod/nvm-fish-wrapper.git nvm-wrapper
-# Add the source for nvm fish wrapper
-echo source ~/.config/fish/nvm-wrapper/nvm.fish >> ./config.fish
 
-# OhMyFish
+fish -c ./install.fish.sh
 
 notify 'Installing Oh-My-Fish...'
 curl -L https://get.oh-my.fish
