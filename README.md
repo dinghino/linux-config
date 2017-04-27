@@ -216,7 +216,7 @@ Which, when vs code is launched the first time, will ask for the `gist id`, fetc
 ## **TODO**
 
 * [x] Complete the first stub of the readme!
-* [ ] List all the stuff needed
+* [ ] Installation instructions
   * [x] Patched fonts instructions
   * [x] nvm (node virtual manager)
   * [ ] Fish + oh-my-fish
@@ -239,9 +239,11 @@ Which, when vs code is launched the first time, will ask for the `gist id`, fetc
     * [x] Add/configure extensions (sync-settings) from cli
     * [ ] Test cli commands
     * [ ] Add to install script
+  * [ ] Google Chrome
 * [ ] Instructions on git setup (Github | Bitbucket ) && auto authenticate
 * [x] Define dependencies
 * [ ] Simple bash script to do everything (regardless of options and choices)
+* [ ] Normalize readme and move all the instructions inside the wiki
 
 
 ## NOTE
