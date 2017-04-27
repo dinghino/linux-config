@@ -211,7 +211,6 @@ It's possible to install the extension through terminal using
     code --install-extension Shan.code-settings-sync
 
 Which, when vs code is launched the first time, will ask for the `gist id`, fetch the settings and the other extensions and install everything
->>>>>>> update readme with vscode instructions
 
 ## **TODO**
 
