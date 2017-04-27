@@ -6,59 +6,35 @@
 
 # Print out a readable header telling what is happening.
 # Will be most probably refactored in something more cool
-function notify {
-    echo
-    echo '======================================'
-    echo  "   ${1}"
-    echo '======================================'
-    echo
-}
 
 # Store the current directory so that we can get back here
 CWD=$PWD
-
+source ./scripts/installers.sh
+# TODO: Interactive mode with menus
 #############################
 #    Install dependecies    #
 #############################
 notify ='Installing dependecies...'
 setupRepositories
 installDependecies
+
 #############################
 #       Required fonts      #
 #############################
 notify 'Installing fonts...'
-sudo unzip '*.zip' -d ~/.local/share/fonts
-sudo fc-cache -fv
-cd ..
-rm -rf ./fonts
+installFonts
 
 #############################
 #       Tilix emulator      #
 #############################
 notify 'Installing tilix...'
-sudo apt-get install tilix -y
-dconf load /com/gexeperts/Terminix/ < ./configs/tilix.dconf
+installTilix
 
 #############################
 #       NVM Install         #
 #############################
 notify 'Installing Node Version Manager...'
-curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
-
-##############################
-#     VIM Configuration      #
-##############################
-
-notify 'Configuring VIm...'
-notify '  Installing Vundle...'
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-notify '  Updating .vimrc file...'
-wget https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc -d ~/.vimrc
-notify '  Installing plugins...'
-vim +PluginInstall +qall
-notify '  Compiling YouCompleteMe plugin...\nit may take a while.'
-cd ~/.vim/bundle/YouCompleteMe
-sudo python3.6 -m ./install --clang-completer --tern-completer
+installNVM
 
 ##############################
 #   Installing Fish shell    #
@@ -66,38 +42,9 @@ sudo python3.6 -m ./install --clang-completer --tern-completer
 ##############################
 
 notify 'Installing fish shell...'
-sudo apt-get install fish -y
-
-fish -c ./install.fish.sh
-
-notify 'Installing Oh-My-Fish...'
-curl -L https://get.oh-my.fish
-# Create config.fish if it does not exists
-if [ ! -f ./config.fish ];then
-        touch ./config.fish
-fi
-
-notify 'Installing VirtualFish...'
-python3.6 -m pip install virtualfish
-echo "eval(python3.6 -m virtualfish)" >> ./config.fish
-
-
-##############################
-#     Finalize Fish setup    #
-##############################
-
-notify 'Finalizing fish installation...'
-fish
-omf install agnoster
-notify 'Setting fish as default shell...'
-sudo chsh -s `which fish`
+installFish
 ##############################
 #     VIM Configuration      #
 ##############################
 notify 'Configuring VIm...'
-notify '  Fetching .vimrc file...'
-curl -L https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc >> ~/.vimrc
-notify '  Installing Plug...'
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-notify '  Installing plugins...'
-vim -c :PlugInstall -c quitall
+configureVIM
