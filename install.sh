@@ -14,37 +14,20 @@ function notify {
     echo
 }
 
-
-# Add ppa repositories required
-# TODO: Check distribution version and add optional ppa for python3.6
-#       As of now this will assume 16.10+
-
-sudo add-apt-repository ppa:fish-shell/release-2 -y
-sudo add-apt-repository ppa:webupd8team/terminix -y
+# Store the current directory so that we can get back here
+CWD=$PWD
 
 #############################
 #    Install dependecies    #
 #############################
-
 notify ='Installing dependecies...'
-sudo apt-get update
-sudo apt-get install xsel git curl vim unzip python3.6 build-essential cmake python-dev python3-dev -y
-
-mkdir /tmp/fonts/
-cd /tmp/fonts/
-
+setupRepositories
+installDependecies
 #############################
 #       Required fonts      #
 #############################
-
-notify 'Fetching fonts...'
-# Get the fonts needed
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/Inconsolata.zip
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/Monofur.zip
-wget https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/FiraCode.zip
-
 notify 'Installing fonts...'
-sudo unzip '\.zip' -d ~/.local/share/fonts
+sudo unzip '*.zip' -d ~/.local/share/fonts
 sudo fc-cache -fv
 cd ..
 rm -rf ./fonts
@@ -52,14 +35,12 @@ rm -rf ./fonts
 #############################
 #       Tilix emulator      #
 #############################
-
 notify 'Installing tilix...'
-sudo apt-get install tilix
+sudo apt-get install tilix -y
 
 #############################
 #       NVM Install         #
 #############################
-
 notify 'Installing Node Version Manager...'
 curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
 
@@ -91,23 +72,6 @@ echo "eval(python3.6 -m virtualfish)" >> ./config.fish
 
 # TODO: This dump of stuff inside config.fish will be removed, and the file
 # Will be recovered from the repo every time
-
-##############################
-#     VIM Configuration      #
-##############################
-
-notify 'Configuring VIm...'
-notify '  Installing Vundle...'
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-notify '  Updating .vimrc file...'
-wget https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc -d ~/.vimrc
-notify '  Installing plugins...'
-vim +PluginInstall +qall
-notify '  Compiling YouCompleteMe plugin...\nit may take a while.'
-cd ~/.vim/bundle/YouCompleteMe
-sudo python3.6 -m ./install --clang-completer --tern-completer
-
-
 ##############################
 #     Finalize Fish setup    #
 ##############################
@@ -117,3 +81,13 @@ fish
 omf install agnoster
 notify 'Setting fish as default shell...'
 sudo chsh -s `which fish`
+##############################
+#     VIM Configuration      #
+##############################
+notify 'Configuring VIm...'
+notify '  Fetching .vimrc file...'
+curl -L https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc >> ~/.vimrc
+notify '  Installing Plug...'
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+notify '  Installing plugins...'
+vim -c :PlugInstall -c quitall
