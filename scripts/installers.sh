@@ -1,6 +1,8 @@
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
+CWD=$PWD
 
+# Action notification header
 function notify {
     echo $BOLD
     echo '============================================='
@@ -8,11 +10,10 @@ function notify {
     echo '============================================='
     echo $NORMAL
 }
-
+# print out a bolded test
 function printBold {
     echo "${BOLD}${1}${NORMAL}"
 }
-
 function setupRepositories {
     # Add ppa repositories required
     # TODO: Check distribution version and add optional ppa for python3.6
@@ -70,7 +71,7 @@ function installFish {
     python3.6 -m pip install virtualfish
 
     printBold "- Updating config.fish..."
-    # NOTE: Add the source for nvm fish wrapper - This will be already present in the 
+    # NOTE: Add the source for nvm fish wrapper - This will be already present in the
     # config.fish present in the repo once its there
     echo "eval (python3.6 -m virtualfish)" >> ~/.config/fish/config.fish
     echo source ~/.config/fish/nvm-wrapper/nvm.fish >> ~/.config/fish/config.fish
