@@ -2,21 +2,19 @@
     set nocompatible                                " required by vundle
     filetype off                                    " required by vundle
     " Runtime path for vundle
-    set  rtp+=~/.vim/bundle/Vundle.vim
-    let g:vundle_default_git_proto='git'
-    call vundle#begin()
+    call plug#begin('~/.vim/bundle')
 
-      Plugin 'VundleVim/Vundle.vim'                 " Let Vundle handle itself
+      Plug 'vim-airline/vim-airline'              " Vim Airline powerline
+      Plug 'vim-airline/vim-airline-themes'       " Themes for vim airline
+      Plug 'kristijanhusak/vim-hybrid-material'   " colorschemes
+      Plug 'scrooloose/nerdtree'                  " tree view
+      Plug 'ryanoasis/vim-devicons'               " Iconize stuff
+      Plug 'motemen/git-vim'                      " Git integration
+      Plug 'MikeCoder/markdown-preview.vim'       " Markdown preview
+      " Autocompletion
+      Plug 'Valloric/YouCompleteMe', { 'do': './install.sh --clang-completer --tern-completer' }
 
-      Plugin 'Valloric/YouCompleteMe'               " Autocompletion
-      Plugin 'vim-airline/vim-airline'              " Vim Airline powerline
-      Plugin 'vim-airline/vim-airline-themes'       " Themes for vim airline
-      Plugin 'kristijanhusak/vim-hybrid-material'   " colorschemes
-      Plugin 'scrooloose/nerdtree'                  " tree view
-      Plugin 'ryanoasis/vim-devicons'               " Iconize stuff
-      Plugin 'motemen/git-vim'                      " Git integration
-
-      call vundle#end()
+    call plug#end()
     filetype plugin indent on
 
 " Make YouCompleteMe work with python3.6
@@ -25,7 +23,7 @@
 " Basic configuration and theming
     set hidden                                      " ctrlspace
     set number                                      " row numbers
-    colorscheme hybrid_reverse
+    silent! colorscheme hybrid_reverse              " if not found will say nothing
     let g:enable_bold_font=1
     set background=dark
 
