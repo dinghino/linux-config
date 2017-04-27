@@ -11,6 +11,7 @@
 CWD=$PWD
 source ./scripts/installers.sh
 # TODO: Interactive mode with menus
+
 #############################
 #    Install dependecies    #
 #############################
@@ -40,11 +41,19 @@ installNVM
 #   Installing Fish shell    #
 #       and utilities        #
 ##############################
-
 notify 'Installing fish shell...'
 installFish
+
 ##############################
 #     VIM Configuration      #
 ##############################
 notify 'Configuring VIm...'
 configureVIM
+
+notify 'Installation completed.'
+printBold 'Now you should...'
+printBold '- activate virtualfish. type `vf` from `fish shell`'
+printBold '- validate fish theme. explore them with `omf theme`'
+printBold '- ensure themes for terminals are set. Use a patched font.'
+printBold "- Use tilix! That's awesome"
+

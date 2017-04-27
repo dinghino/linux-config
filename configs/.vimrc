@@ -213,3 +213,4 @@ function! DoPrettyXML()
         set filetype=xml
 endfunction
 command! PrettyXML call DoPrettyXML()
+
