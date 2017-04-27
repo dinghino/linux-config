@@ -219,22 +219,30 @@ Which, when vs code is launched the first time, will ask for the `gist id`, fetc
 * [x] Complete the first stub of the readme!
 * [ ] List all the stuff needed
   * [x] Patched fonts instructions
-  * [x] Fish + oh-my-fish
-  * [x] virtualfish (python virtualenvwrapper for fish)
   * [x] nvm (node virtual manager)
-  * [x] [nvm-fish-wrapper](https://github.com/passcod/nvm-fish-wrapper)
-  * [x] VirtualFish (python virtualenvwrapper)
-  * [x] tilix terminal emulator (ex terminix)
-  * [x] Vim config instructions
+  * [ ] Fish + oh-my-fish
+    * [x] Install fish shell
+    * [ ] Install oh-my-fish
+    * [ ] Set theme `agnoster` as default
+    * [ ] Set as default shell
+    * [x] virtualfish (python virtualenvwrapper for fish)
+    * [x] [nvm-fish-wrapper](https://github.com/passcod/nvm-fish-wrapper)
+    * [x] VirtualFish (python virtualenvwrapper)
+  * [ ] tilix terminal emulator (ex terminix)
+    * [x] Instruction for installing
+    * [x] Add to install script
+    * [ ] Auto configure profile
+  * [ ] Vim config instructions
+    * [x] Install vim
+    * [x] Update `.vimrc` from `./configs/` or git repo
+    * [ ] Install plugins correctly
   * [x] Instructions for VSCode
     * [x] Add/configure extensions (sync-settings) from cli
     * [ ] Test cli commands
-* [ ] Autoconfigure terminal profiles
+    * [ ] Add to install script
 * [ ] Instructions on git setup (Github | Bitbucket ) && auto authenticate
 * [x] Define dependencies
-* [ ] setup microscript to fetch various `config`s from gists and set them up
-* [ ] Logically decide the steps
-* [ ] Simple bash script to do everything (regardless of options)
+* [ ] Simple bash script to do everything (regardless of options and choices)
 
 
 ## NOTE
