@@ -17,9 +17,9 @@ For the moment it will contain all the instructions with command lines to setup 
 * [NVM Fish wrapper](#nvm-fish-wrapper)
 * [Virtalfish](#virtualfish)
 * [VIm configuration](#vim-configuration)
-    * [Get Vundle](#get-vundle)
+    * [Get Plug](#get-plug)
     * [Update .vimrc](#update-vimrc)
-    * [Install vundle plugins](#install-vundle-plugins)
+    * [Install Plug plugins](#install-plug-plugins)
 * [Tilix](#tilix) terminal emulator
 * [Visual Studio Code](#visualstudio-code)
 * [TODO](#todo)
@@ -132,9 +132,9 @@ Restart the sell and call `vf` to use it.
 
 Vim should be already installed with the initial `apt-get` for the dependecies,
 so what's left to be done is to do is...
-#### Get `vundle`
+#### Get `Plug`
 
-    git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
 #### update `.vimrc`
 from the latest version on the repo
@@ -145,21 +145,20 @@ from the latest version on the repo
 
     cp ./configs/.vimrc ~/.vimrc
 
-#### Install vundle plugins
+#### Install Plug plugins
 
-    sudo vim -c VundleUpdate -c quitall
+    sudo vim -c :PlugInstall -c quitall
 
 This may pull out some errors while processing due plugins missing but it's ok.
 
 Configure `YouCompleteMe`
-with
+Using `Plug` instead of other plugins manager like `vundle` allows installing automatically
+al the dependecies and build `ycmd`, but if more completer are needed it can be done with
 
     cd ~/.vim/bundle/YouCompleteMe
     sudo python3.6 -m ./install.py --clang-completer --tern-completer
 
-The install script get passed only CLang and tern parameters since we only have those
-installed at the moment. This could take a while but has a nice output that logs everything.
-
+For more information see
 * [YouCompleteMe documentation](http://valloric.github.io/YouCompleteMe/)
 * [Personal GIST with other info](https://gist.github.com/dinghino/0f081500fdbb98b9db85a4cb3d3330b9)
 
@@ -222,20 +221,20 @@ Which, when vs code is launched the first time, will ask for the `gist id`, fetc
   * [x] nvm (node virtual manager)
   * [ ] Fish + oh-my-fish
     * [x] Install fish shell
-    * [ ] Install oh-my-fish
-    * [ ] Set theme `agnoster` as default
+    * [x] Install oh-my-fish
+    * [ ] Fetch and set theme `agnoster` automatically
     * [ ] Set as default shell
     * [x] virtualfish (python virtualenvwrapper for fish)
     * [x] [nvm-fish-wrapper](https://github.com/passcod/nvm-fish-wrapper)
     * [x] VirtualFish (python virtualenvwrapper)
-  * [ ] tilix terminal emulator (ex terminix)
+  * [x] tilix terminal emulator (ex terminix)
     * [x] Instruction for installing
     * [x] Add to install script
-    * [ ] Auto configure profile
-  * [ ] Vim config instructions
+    * [x] Auto configure profile
+  * [x] Vim config instructions
     * [x] Install vim
     * [x] Update `.vimrc` from `./configs/` or git repo
-    * [ ] Install plugins correctly
+    * [x] Install plugins correctly
   * [x] Instructions for VSCode
     * [x] Add/configure extensions (sync-settings) from cli
     * [ ] Test cli commands
