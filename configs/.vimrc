@@ -2,24 +2,27 @@
 " General vim configuration configuration
 
 set nocompatible                        " Required first, changes everything
-set hidden                              "
+set hidden                              " Allow switch buffers w/o saving
 set backspace=indent,eol,start          " Allow backspace in insert mode
 set history=1000                        " :cmdline history
 set showcmd                             " Commands at the bottom
 set gcr=a:blinkon0                      " Disable blinking cursor
 set autoread                            " Reload files changed from outside
 set number                              " Display row number
-set wildmenu                            " Command tab menu
 set showmatch                           " Highlight matching parenthesis
-set timeoutlen=250                      " Timeout for ESC commands
+set timeoutlen=250                      " Timeout for key combinations
 set syntax=on                           " Enable syntax higlight
 
 if has('mouse')                         " enable mouse if available
     set mouse=a
 endif
 
-" Font setting does not work :(
-set guifont=Fira\ Mono\ for\ Powerline\ 14
+let mapleader = ","                     " Change <Leader>
+
+" Bashlike filename completion
+set wildmenu
+set wildmode=list:longest
+set wildignore=*.o,*.fasl
 
 
 " =============================================== Whitespaces & Indentation ===
@@ -32,13 +35,9 @@ set smarttab
 set nowrap
 set scrolloff=5                         " Keep 5 lines below and above cursor
 
-" Auto indent pasted text
-nnoremap p p=`]<C-o>
-nnoremap P P=`]<C-o>
-
 " Symbols for whitespaces
 set listchars=eol:¬,tab:>·,trail:·,extends:>,precedes:<
-set list
+set list                                " Display whitespaces by default
 
 
 " ============================================================ Code Folding ===
@@ -105,7 +104,18 @@ set background=dark
 silent! colorscheme hybrid_reverse      " Set colorscheme. Fails silently
 let g:enable_bold_font=1                " Bold fonts enabled
 set cursorline                          " Highlight cursor line
+set title                               " Override the terminal title
+set ruler
+set visualbell                          " Flash instead of beeping
 
+" If running gvim also do some other stuff
+if has('gui_running')
+  set encoding=utf-8
+  set guifont=Fira\ Mono\ for\ Powerline\ 14
+  " Turn off toolbar and menu
+  set guioptions-=T
+  set guioptions-=m
+end
 
 
 " =========================================================== YouCompleteMe ===
@@ -138,8 +148,8 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " NERDTress File highlighting
 
 function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-  exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-  exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+exec 'autocmd filetype nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 
 call NERDTreeHighlightFile('jade', 'green', 'none', 'green', '#151515')
@@ -168,4 +178,38 @@ let g:webdevicon_enable_ariline_statusline=1
 " ============================================================= Key mapping ===
 
 map <C-n> :NERDTreeToggle<CR>             " Map ctrl-n to nerdtree
+map <silent> <leader>s :set nolist!<CR>   " Toggle whitespaces display
+nmap <silent> <C-n> :silent :nohlsearch<CR> " Toggle highlighting
 
+
+" =============================================================== Behaviour ===
+" Various behavioural mapping
+
+" Toggle is mapped on Mapping section
+" Scroll faster
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
+vnoremap <C-e> 3<C-e>
+vnoremap <C-y> 3<C-y>
+
+" Auto indent pasted text
+nnoremap p p=`]<C-o>
+nnoremap P P=`]<C-o>
+
+
+" ============================================== Language specific settings ===
+"
+autocmd FileType javascript,html set ts=2 shiftwidth=2 expandtab
+autocmd Filetype python set ts=4 shiftwidth=2 expandtab
+
+
+" =============================================================== Functions ===
+"
+"
+
+" Inndent XML readably
+function! DoPrettyXML()
+        1,$!xmllint --format --recover -
+        set filetype=xml
+endfunction
+command! PrettyXML call DoPrettyXML()
