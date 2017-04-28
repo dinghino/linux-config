@@ -21,15 +21,17 @@ For the moment it will contain all the instructions with command lines to setup 
     * [Update .vimrc](#update-vimrc)
     * [Install Plug plugins](#install-plug-plugins)
 * [Tilix](#tilix) terminal emulator
+* [Heroku](#heroku)
 * [Visual Studio Code](#visualstudio-code)
+* [Chrome](#google-chrome)
 * [TODO](#todo)
 
-## Installation
+# Installation
 Until a script is available I will put all the installation instructions here. This section will be moved probably somewhere else later on, but for ease it'll stay here for now.
 
 > Note that all the commands are for a debian distribution (Currently running Ubuntu 17.04 + Gnome 3) and are meant to work from the terminal.
 
-### Basic dependecies
+## Basic dependecies
 
 > **NOTE**
 > If on `16.10+` python3.6 is on the universe repositories and there is no need to add the repo. For older versions please add the ppa repository for python3.6
@@ -43,7 +45,7 @@ installed by default on the system
     $ sudo apt-get update
     $ sudo apt-get install git curl vim unzip python3.6 build-essential cmake python-dev python3-dev -y
 
-#### Fonts
+### Fonts
 Also both `fish shell` and vim plugins require a patched font to properly work.
 
 My choices are on `Inconsolata` and `Monofur` fonts, both available from [this awesome repository](https://github.com/ryanoasis/nerd-fonts)
@@ -69,7 +71,7 @@ To install from command line just those two fonts:
 
 **After installing the fonts edit your terminal profile to use one of them**
 
-### **N**ode **V**ersion **M**anager
+## **N**ode **V**ersion **M**anager
 
 * [Repository](https://github.com/creationix/nvm)
 
@@ -79,7 +81,7 @@ NVM Allows handling different versions of `nodejs` and relative npm easily
 
 Will install `nvm` and configure it for bash
 
-### Fish shell
+## Fish shell
 
 * [Fish shell website](https://fishshell.com/)
 * [Oh my fish repository](https://github.com/oh-my-fish/oh-my-fish)
@@ -88,11 +90,11 @@ $ sudo add-apt-repository ppa:fish-shell/release-2 -y
 $ sudo apt-get update
 $ sudo apt-get install fish -y
 
-# Install oh-my-fish and set agnoster theme
+### Install oh-my-fish and set agnoster theme
 $ curl -L https://get.oh-my.fish | fish
 $ omf install agnoster  # download and set agnoster theme
 
-# Set fish as default shell
+### Set fish as default shell
 $ chsh -s `which fish`
 ```
 If everything has been set properly the terminal should display correctly and fish be your default shell.
@@ -128,15 +130,17 @@ Edit `~/.config/fish/config.fish` and put
 Restart the sell and call `vf` to use it.
 
 
-### VIm configuration
+## VIm configuration
 
 Vim should be already installed with the initial `apt-get` for the dependecies,
 so what's left to be done is to do is...
-#### Get `Plug`
+
+### Get `Plug`
 
     curl -fLo ~/.vim/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
-#### update `.vimrc`
+### update `.vimrc`
+
 from the latest version on the repo
 
     wget https://raw.githubusercontent.com/dinghino/linux-config/master/configs/.vimrc -d ~/.vimrc
@@ -145,7 +149,7 @@ from the latest version on the repo
 
     cp ./configs/.vimrc ~/.vimrc
 
-#### Install Plug plugins
+### Install Plug plugins
 
     sudo vim -c :PlugInstall -c quitall
 
@@ -163,7 +167,7 @@ For more information see
 * [Personal GIST with other info](https://gist.github.com/dinghino/0f081500fdbb98b9db85a4cb3d3330b9)
 
 
-### Tilix
+## Tilix
 
 Tilix is an alternative terminal emulator that allows window splitting, tabs etc, previously known as `terminix`
 * [Repository](https://github.com/gnunn1/tilix)
@@ -180,7 +184,11 @@ found at `/configs/tilix.dconf`
 To load the configuration `dconf load /com/gexperts/Terminix/ < ./configs/tilix.dconf`
 to do a dump `dconf dump /com/gexperts/Terminix/ > ./configs/tilix.dconf` from the repo root folder.
 
-### VisualStudio Code
+## Heroku
+
+coming soon
+
+## VisualStudio Code
 
 * [Webiste](https://code.visualstudio.com/)
 * [Documentaion](https://code.visualstudio.com/docs/setup/linux) for installing
@@ -203,7 +211,7 @@ sudo apt-get update
 sudo apt-get install code # or code-insiders
 ```
 
-#### Installing extensions
+### Installing extensions
 
 Visual studio code comes with extension support; one of them, `setting sync` allows to sync the setting through a [github gist](https://gist.github.com/dinghino/3434e8504e8fb7bf6960f075acd7aca3).
 It's possible to install the extension through terminal using
@@ -211,6 +219,13 @@ It's possible to install the extension through terminal using
     code --install-extension Shan.code-settings-sync
 
 Which, when vs code is launched the first time, will ask for the `gist id`, fetch the settings and the other extensions and install everything
+
+
+## Google Chrome
+
+**coming soon**
+> x64 only
+
 
 ## **TODO**
 
