@@ -5,3 +5,5 @@ wip/
 __pycache__/
 
 *.pyc
+
+\.vscode/
