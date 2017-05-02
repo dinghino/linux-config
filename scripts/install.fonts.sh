@@ -6,19 +6,17 @@
 source ./utils.sh
 
 # Install fonts
-mkdir /tmp/fonts/
-cd /tmp/fonts/
+mkdir ./fonts/
 # Get the fonts needed
 printBold '- Fetching Inconsolata...'
-curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/Inconsolata.zip >> ./inconsolata.zip
+curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/Inconsolata.zip >> ./fonts/inconsolata.zip
 printBold '- Fetching Monofur...'
-curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/Monofur.zip >> ./monofur.zip
+curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/Monofur.zip >> ./fonts/monofur.zip
 printBold '- Fetching Firacode...'
-curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/FiraCode.zip >> ./firacode.zip
+curl -L https://github.com/ryanoasis/nerd-fonts/releases/download/v1.0.0/FiraCode.zip >> ./fonts/firacode.zip
 printBold '- Unpacking...'
-sudo unzip '*.zip' -d ~/.local/share/fonts
+sudo unzip './fonts/*.zip' -d ~/.local/share/fonts
 printBold '- Updating font cache (reload terminal to use new fonts)'
 sudo fc-cache -fv
 printBold '- Cleaning up'
-cd ..
 rm -rf ./fonts
