@@ -10,14 +10,16 @@
 # Store the current directory so that we can get back here
 CWD=$PWD
 source ./scripts/installers.sh
+
 # TODO: Interactive mode with menus
 
 #############################
 #    Install dependecies    #
 #############################
 notify ='Installing dependecies...'
-setupRepositories
-installDependecies
+./scripts/install.dependecies.all.sh
+# setupRepositories
+# installDependecies
 
 #############################
 #       Required fonts      #

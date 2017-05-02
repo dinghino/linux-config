@@ -1,19 +1,7 @@
-BOLD=$(tput bold)
-NORMAL=$(tput sgr0)
+source ./utils.sh
+
 CWD=$PWD
 
-# Action notification header
-function notify {
-    echo $BOLD
-    echo '============================================='
-    echo  " ${1}"
-    echo '============================================='
-    echo $NORMAL
-}
-# print out a bolded test
-function printBold {
-    echo "${BOLD}${1}${NORMAL}"
-}
 function setupRepositories {
     # Add ppa repositories required
     # TODO: Check distribution version and add optional ppa for python3.6
@@ -79,8 +67,7 @@ function installFish {
     chsh -s `which fish`
     printBold 'Installing oh my fish...'
     cd $CWD
-    curl -L https://get.oh-my.fish | fish
-    # fish ./scripts/configure.fish.sh
+    fish ./scripts/configure.fish.sh
 }
 function configureVIM {
     printBold '- Fetching .vimrc file...'
