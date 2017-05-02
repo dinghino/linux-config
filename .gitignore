@@ -1,3 +1,7 @@
 *.swp
 wip/
 
+
+__pycache__/
+
+*.pyc
