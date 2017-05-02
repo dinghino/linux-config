@@ -10,32 +10,32 @@
 # Store the current directory so that we can get back here
 CWD=$PWD
 source ./scripts/installers.sh
+
 # TODO: Interactive mode with menus
 
 #############################
 #    Install dependecies    #
 #############################
 notify ='Installing dependecies...'
-setupRepositories
-installDependecies
+./scripts/install.dependecies.all.sh
 
 #############################
 #       Required fonts      #
 #############################
 notify 'Installing fonts...'
-installFonts
+./scripts/install.fonts.sh
 
 #############################
 #       Tilix emulator      #
 #############################
 notify 'Installing tilix...'
-installTilix
+./scripts/install.tilix.sh
 
 #############################
 #       NVM Install         #
 #############################
 notify 'Installing Node Version Manager...'
-installNVM
+./scripts/install.nvm.sh
 
 ##############################
 #   Installing Fish shell    #
