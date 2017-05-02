@@ -35,7 +35,7 @@ notify 'Installing tilix...'
 #       NVM Install         #
 #############################
 notify 'Installing Node Version Manager...'
-installNVM
+./scripts/install.nvm.sh
 
 ##############################
 #   Installing Fish shell    #
