@@ -18,20 +18,18 @@ source ./scripts/installers.sh
 #############################
 notify ='Installing dependecies...'
 ./scripts/install.dependecies.all.sh
-# setupRepositories
-# installDependecies
 
 #############################
 #       Required fonts      #
 #############################
 notify 'Installing fonts...'
-installFonts
+./scripts/install.fonts.sh
 
 #############################
 #       Tilix emulator      #
 #############################
 notify 'Installing tilix...'
-installTilix
+./scripts/install.tilix.sh
 
 #############################
 #       NVM Install         #
