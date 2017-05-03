@@ -1,7 +1,7 @@
 import click
 from app import AppManager
 
-pass_conf = click.make_pass_decorator(AppManager, ensure=True)
+pass_app = click.make_pass_decorator(AppManager, ensure=True)
 
 
 def echo_header(text):
@@ -13,8 +13,8 @@ def echo_header(text):
     click.echo('{}{}{}'.format(hborder, text, hborder))
 
 
-@pass_conf
-def setup(config):
+@pass_app
+def setup(app):
     """
     App setup entry point from cli. allows interactive configuration of
     basic informations such as usernames and passwords that will be used or
@@ -23,31 +23,31 @@ def setup(config):
     click.clear()
     echo_header('Basic configuration')
     click.echo('Some configuration so I can work better!')
-    if not config.sudo:
+    if not app.sudo:
         sudo = click.prompt(
             'Enter your sudo password, so I won\'t ask again',
             type=str, hide_input=True, confirmation_prompt=True)
 
-        config.sudo = sudo
+        app.sudo = sudo
     if click.confirm('Have github?', default='yes'):
         get_gh_login()
 
-    config.update_option('setup', value='Done')
+    app.update_option('setup', value='Done')
 
 
-@pass_conf
-def get_gh_login(config):
-    config.has_gh = True
+@pass_app
+def get_gh_login(app):
+    app.has_gh = True
     gh_user = click.prompt('Username', type=str)
     gh_pass = click.prompt('Password', hide_input=True,
                            confirmation_prompt=True)
-    config.gh_user = gh_user
-    config.gh_pass = gh_pass
+    app.gh_user = gh_user
+    app.gh_pass = gh_pass
 
 
-@pass_conf
-def menu(config):
-    validate_prompt = click.IntRange(1, len(config.options))
+@pass_app
+def menu(app):
+    validate_prompt = click.IntRange(1, len(app.options))
 
     def echo_menu_row(i, text, installed=None, show_status=True, *args, **kwargs):
         """ print a row of the main menu with status. """
@@ -72,7 +72,7 @@ def menu(config):
     echo_header('One bootstrap to rule them all')
 
     # Generate the menu
-    for i, opt in enumerate(config.options):
+    for i, opt in enumerate(app.options):
         echo_menu_row(i, **opt)
 
     # Get the user choice
@@ -80,7 +80,7 @@ def menu(config):
                           type=validate_prompt,
                           prompt_suffix='? ')
     # Get the correct option from the app options list
-    chosen = config.options[choice - 1]
+    chosen = app.options[choice - 1]
 
     # Ask for confirmation.
     confirm_str = '  {}'.format(
@@ -94,8 +94,8 @@ def menu(config):
 
 @click.group()
 @click.option('-v', '--verbose', count=True, default=0)
-@pass_conf
-def cli(config, verbose):
+@pass_app
+def cli(app, verbose):
     """
     Bootstrap application for linux system.
     Allows management of basic dependecies and application for developing in
@@ -106,31 +106,35 @@ def cli(config, verbose):
     code...
     """
     # Update configuration values
-    config.verbose = verbose
+    app.verbose = verbose
     # Add cli specific functionalities to the options from the app
-    config.add_option('Setup', setup, 0)
+    app.add_option('Setup', setup, 0)
 
     def launch_test_script(opt_idx):
         def cb():
-            # import subprocess
             click.secho('Launching test script...', bold=True, bg='red')
-            config.update_option(idx=idx)
+            result = app.execute(
+                app.get_script_path('apt.exists.sh python3.6'),
+                cb=app.update_option, idx=opt_idx
+            )
+            click.secho(result, fg='cyan', bold=True)
         return cb
 
-    idx = len(config.options)
-    config.add_option(click.style('Test', fg='red'), launch_test_script(idx))
-    config.add_option(
+    idx = len(app.options)
+    app.add_option(click.style('Test script call', bold=True),
+                   launch_test_script(idx))
+    app.add_option(
         click.style('Quit', fg='yellow'),
         lambda: exit(0),
         show_status=False)
 
 
 @cli.command()
-@pass_conf
-def start(config):
+@pass_app
+def start(app):
     """ Interactive mode with menu and stuff. """
 
-    # if not config.setup_done:
+    # if not app.setup_done:
     #     setup()
     menu()
 
