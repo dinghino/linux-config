@@ -79,10 +79,11 @@ def menu(app):
 
     click.clear()
     echo_header('One bootstrap to rule them all')
-
+    click.echo()
     # Generate the menu
     for i, opt in enumerate(app.options):
         echo_menu_row(i, **opt)
+    click.echo()
 
     # Get the user choice
     choice = click.prompt('What to do next',
@@ -90,7 +91,7 @@ def menu(app):
                           prompt_suffix='? ')
     # Get the correct option from the app options list
     chosen = app.options[choice - 1]
-
+    click.echo()
     # Ask for confirmation.
     confirm_str = '  {}'.format(
         click.style(chosen['text'], bold=True, fg='yellow'))
@@ -116,10 +117,10 @@ def cli(app, verbose):
     """
     # Update configuration values
     app.verbose = verbose
-    # Add cli specific functionalities to the options from the app
-    app.add_option('Setup', setup, 0)
 
     def launch_test_script(opt_idx):
+        # TODO: Remove once done testing stuff. Function callback for
+        # 'Test script call' option
         def cb():
             click.secho('Launching test script...', bold=True, bg='red')
             result = app.execute(
@@ -128,6 +129,9 @@ def cli(app, verbose):
             )
             click.secho(result, fg='cyan', bold=True)
         return cb
+
+    # Add cli specific functionalities to the options from the app
+    app.add_option('Setup', setup, 0)
 
     idx = len(app.options)
     app.add_option(click.style('Test script call', bold=True),
