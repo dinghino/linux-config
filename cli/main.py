@@ -55,18 +55,23 @@ def menu(app):
 
     def echo_menu_row(i, text, installed=None, show_status=True, *args, **kwargs):
         """ print a row of the main menu with status. """
-        ins = installed  # shortcut
+        inst = installed  # shortcut
 
+        # Status icon
         done = click.style('{:^3}'.format(' ✓ '), fg='green')
         todo = click.style('{:^3}'.format(' ✘ '), fg='red')
         nostatus = '{:^3}'.format('')
-        status = nostatus if not show_status else done if ins else todo
+        status = nostatus if not show_status else done if inst else todo
+
+        # User friendly option index number
         idx = click.style('{:^3}'.format(i + 1), bold=True)
         idx = '[{}]'.format(idx)
+
         # txt color and date_ string are defined by the presence of installed
         # argument, allowing a visual feedback on what's done already.
-        txt = '{:<35}'.format(click.style(text, fg='green' if ins else ''))
-        date_ = '({})'.format(click.style(ins, dim=True)) if ins else ''
+        dispclr = inst and show_status
+        txt = '{:<35}'.format(click.style(text, fg='green' if dispclr else ''))
+        date_ = '({})'.format(click.style(inst, dim=True)) if dispclr else ''
 
         # Print out the created row
         click.echo('{i}{s}{t}{d}'.format(
