@@ -6,6 +6,7 @@ import copy
 import json
 import os
 import shlex
+import six
 import subprocess
 import time
 from datetime import datetime
@@ -139,6 +140,10 @@ class AppManager(object):
         Update the `installed` attribute of the given option, either by
         `name` ('text' attribute) or by `idx` (index in the option list)
         """
+        # Look up both private (in_options) and public (options) indexes
+        # for the given option name or index. Note that they can result as
+        # None if the passed name is wrong (both) or the option has been added
+        # at runtime (private_idx)
         if name and not idx:
             public_idx = self.find_option_idx(name)
             private_idx = self._find_json_option_idx(name)
@@ -149,16 +154,26 @@ class AppManager(object):
         else:
             raise ValueError('Missing option <idx> or <text> values')
 
-        if not public_idx:
-            raise IndexError('Option index out of range')
-
         install_date = datetime.now().strftime('%d/%m/%Y')
 
-        self.options[public_idx]['installed'] = install_date
+        try:
+            self.options[public_idx]['installed'] = install_date
+        except (TypeError, IndexError) as e:
+            # IndexError should never happen, but can be raised when accessing
+            # the list. TypeError can be raised when public_idx is None due to
+            # option not found. This should not happen, so reraise.
+            msg = 'Option {} (`{}`) not found.'.format(public_idx, name)
+            raise six.raise_from(IndexError(msg), e)
+
         try:
             self._options[private_idx]['installed'] = install_date
-        except KeyError:  # optiona added at runtime
+        except TypeError:
+            # option added at runtime, so it can't be found in the private
+            # options list. cases are that private_idx is None due to searching
+            # for a non persistent option. we don't care about the case and
+            # fail silently.
             pass
 
+        # dump the updated private _options to the file.
         with click.open_file(self._app_state_path, 'w', atomic=True) as fo:
             json.dump(self._options, fo, indent=4)
