@@ -1,11 +1,11 @@
 [
     {
         "text": "Install option 1",
-        "callback": "1"
+        "script": "1"
     },
     {
         "text": "Install option 2",
         "installed": "02/05/2017",
-        "callback": "2"
+        "script": "2"
     }
 ]
