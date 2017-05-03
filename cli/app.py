@@ -65,10 +65,11 @@ class AppManager(object):
         Execute the given script, then call the optional callback passing
         the script output as first argument and all extra arguments given.
         """
-        # NOTE: For now assume the the <script> argument is a path to valid
-        # script and try to call it. Later we'll check if it's a path, if it
-        # points to something (exists), otherwise we'll assume that it's the
-        # script's name and try to evaluate its path.
+        # TODO: For now assume the the <script> argument is a path to valid
+        # script - or a shell command - and try to call it. Later
+        # we may want to check if it's a path, if it points to something,
+        # has some kind of flag for a shell command, or otherwise
+        # assume that it's the script's name and try to evaluate its path.
         _execute = shlex.split(script)
         p = subprocess.Popen(_execute, stdout=subprocess.PIPE)
         output, error = p.communicate()
