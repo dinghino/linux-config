@@ -1,12 +1,14 @@
 import click
-from app import AppManager, launch_test_script
+from app import AppManager
 
 pass_conf = click.make_pass_decorator(AppManager, ensure=True)
 
 
 def echo_header(text):
-    """ Echo a stylish header. """
-    hborder = click.style('===', fg='green')
+    """ Echo a stylish header, 79 characters long. """
+    txtlen = len(text)
+    border_len = (80 - txtlen - 2) // 2
+    hborder = click.style('=' * border_len, fg='green')
     text = click.style(' {} '.format(text), bold=True)
     click.echo('{}{}{}'.format(hborder, text, hborder))
 
@@ -47,17 +49,24 @@ def get_gh_login(config):
 def menu(config):
     validate_prompt = click.IntRange(1, len(config.options))
 
-    def echo_menu_row(i, text, installed=None, *args, **kwargs):
-        ins = installed
+    def echo_menu_row(i, text, installed=None, show_status=True, *args, **kwargs):
         """ print a row of the main menu with status. """
+        ins = installed  # shortcut
+
+        done = click.style('{:^3}'.format('✓'), fg='green')
+        todo = click.style('{:^3}'.format('✘'), fg='red')
+        nostatus = '{:^3}'.format('')
+        status = nostatus if not show_status else done if ins else todo
         idx = click.style('{:^3}'.format(i + 1), bold=True)
-        idx = click.style('{}'.format(idx))
+        idx = '[{}]'.format(idx)
         # txt color and date_ string are defined by the presence of installed
         # argument, allowing a visual feedback on what's done already.
         txt = '{:<35}'.format(click.style(text, fg='green' if ins else ''))
         date_ = '({})'.format(click.style(ins, dim=True)) if ins else ''
+
         # Print out the created row
-        click.echo('{i} {t}{d}'.format(i=idx, t=txt, d=date_))
+        click.echo('{i}{s}{t}{d}'.format(
+            i=idx, t=txt, d=date_, s=status))
 
     click.clear()
     echo_header('One bootstrap to rule them all')
@@ -100,8 +109,20 @@ def cli(config, verbose):
     config.verbose = verbose
     # Add cli specific functionalities to the options from the app
     config.add_option('Setup', setup, 0)
-    config.add_option(click.style('Quit', fg='yellow'), lambda: exit(0))
-    config.add_option(click.style('Test', fg='red'), launch_test_script)
+
+    def launch_test_script(opt_idx):
+        def cb():
+            # import subprocess
+            click.secho('Launching test script...', bold=True, bg='red')
+            config.update_option(idx=idx)
+        return cb
+
+    idx = len(config.options)
+    config.add_option(click.style('Test', fg='red'), launch_test_script(idx))
+    config.add_option(
+        click.style('Quit', fg='yellow'),
+        lambda: exit(0),
+        show_status=False)
 
 
 @cli.command()

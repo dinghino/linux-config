@@ -9,11 +9,6 @@ from datetime import datetime
 import click
 
 
-def launch_test_script():
-    # import subprocess
-    click.secho('Launching test script...', bold=True, bg='red')
-
-
 class AppManager(object):
     """
     Context and Configuration variables for the application.
@@ -52,7 +47,7 @@ class AppManager(object):
 
         return cb
 
-    def add_option(self, text, callback, pos=False):
+    def add_option(self, text, callback, pos=False, *args, **kwargs):
         """
         Add one option to the options for the app menu.
         If a `pos` is given, the item will be put at that position
@@ -66,6 +61,12 @@ class AppManager(object):
         idx = pos if is_number() and in_range() else len(self.options)
         self.options.insert(idx, {'text': text, 'callback': callback})
 
+        # add extra options
+        for k, v in kwargs.items():
+            self.options[idx][k] = v
+
+        return idx
+
     def find_option_idx(self, value, key='text'):
         """Find an option index. """
         for i, v in enumerate(self.options):
@@ -78,7 +79,7 @@ class AppManager(object):
                 return i
         return None
 
-    def update_option(self,  name=None, idx=None, value=None):
+    def update_option(self,  name=None, idx=None, value=None, *args, **kwargs):
         """
         Update the `installed` attribute of the given option, either by
         `name` ('text' attribute) or by `idx` (index in the option list)
