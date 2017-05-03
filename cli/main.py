@@ -96,7 +96,14 @@ def menu(app):
     confirm_str = '  {}'.format(
         click.style(chosen['text'], bold=True, fg='yellow'))
     if click.confirm(confirm_str, default='yes', show_default=True):
-        chosen['callback']()
+        try:
+            chosen['callback']()
+        except TypeError as e:
+            # import pdb
+            # pdb.set_trace()
+            msg = 'Error while trying to run option {} function!\n'\
+                  '>>> {}'.format(choice, e)
+            click.secho(msg, fg='red', bold=True)
         click.pause()
 
     menu()
