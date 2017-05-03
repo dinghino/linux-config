@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+"""
+CLI for the rule them all program
+"""
 import click
 from app import AppManager
 
@@ -32,7 +36,7 @@ def setup(app):
     if click.confirm('Have github?', default='yes'):
         get_gh_login()
 
-    app.update_option('setup', value='Done')
+    app.update_option('setup')
 
 
 @pass_app
@@ -53,8 +57,8 @@ def menu(app):
         """ print a row of the main menu with status. """
         ins = installed  # shortcut
 
-        done = click.style('{:^3}'.format('✓'), fg='green')
-        todo = click.style('{:^3}'.format('✘'), fg='red')
+        done = click.style('{:^3}'.format(' ✓ '), fg='green')
+        todo = click.style('{:^3}'.format(' ✘ '), fg='red')
         nostatus = '{:^3}'.format('')
         status = nostatus if not show_status else done if ins else todo
         idx = click.style('{:^3}'.format(i + 1), bold=True)
