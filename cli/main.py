@@ -143,6 +143,13 @@ def cli(app, verbose):
     idx = len(app.options)
     app.add_option(click.style('Test script call', bold=True),
                    launch_test_script(idx))
+    # TODO: pass a callback view to allow the user to type a command that the
+    # app will .execute(), allowing using commands directly from the app.
+    app.add_option(
+        click.style('Execute command', fg='blue'),
+        None, show_status=False)
+
+    # Quit option should be last
     app.add_option(
         click.style('Quit', fg='yellow'),
         lambda: exit(0),
