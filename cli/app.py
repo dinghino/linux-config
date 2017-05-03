@@ -94,21 +94,21 @@ class AppManager(object):
 
         return cb
 
-    def add_option(self, text, callback, pos=False, *args, **kwargs):
+    def add_option(self, text, callback, idx=False, *args, **kwargs):
         """
         Add one option to the options for the app menu.
-        If a `pos` is given, the item will be put at that position
+        If a `idx` is given, the item will be put at that position
         """
         def is_number():  # 0 is a position, but falsy
-            return type(pos) is int
+            return type(idx) is int
 
         def in_range():  # must be in range
-            return pos >= 0 and pos < len(self.options)
+            return idx >= 0 and idx < len(self.options)
 
-        idx = pos if is_number() and in_range() else len(self.options)
+        idx = idx if is_number() and in_range() else len(self.options)
         self.options.insert(idx, {'text': text, 'callback': callback})
 
-        # add extra options
+        # add extra option properties
         for k, v in kwargs.items():
             self.options[idx][k] = v
 
