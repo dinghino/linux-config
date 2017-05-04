@@ -9,9 +9,7 @@ pass_app = click.make_pass_decorator(AppManager, ensure=True)
 
 
 def _setup_app_context(app):
-    """
-    Add testing functionalities and other stuff that will be removed later on
-    """
+    """Add testing functionalities that will be removed later on."""
     def launch_test_script(opt_idx):
         # TODO: Remove once done testing stuff. Function callback for
         # 'Test script call' option
@@ -30,11 +28,6 @@ def _setup_app_context(app):
     idx = len(app.options)
     app.add_option(click.style('Test script call', bold=True),
                    launch_test_script(idx))
-    # TODO: pass a callback view to allow the user to type a command that the
-    # app will .execute(), allowing using commands directly from the app.
-    app.add_option(
-        click.style('Execute command', fg='blue'),
-        None, show_status=False)
 
 
 def echo_header(text):
@@ -107,6 +100,24 @@ def menu(app):
         click.echo('{i}{s}{t}{d}'.format(
             i=idx, t=txt, d=date_, s=status))
 
+    def prompt_user():
+        # Get the user choice
+        choice = click.prompt('What to do next',
+                              type=validate_prompt,
+                              prompt_suffix='? ')
+        # Get the correct option from the app options list
+        return app.options[choice - 1]
+
+    def execute_choice(choice):
+        try:
+            choice['callback']()
+        except Exception as e:
+            msg = 'Error while trying to run option `{}` function!\n'\
+                  '>>> {}\n'.format(choice['text'], e, choice)
+            click.secho(msg, fg='red', bold=True)
+
+    # Execution time!
+
     click.clear()
     echo_header('One bootstrap to rule them all')
     click.echo()
@@ -115,25 +126,14 @@ def menu(app):
         echo_menu_row(i, **opt)
     click.echo()
 
-    # Get the user choice
-    choice = click.prompt('What to do next',
-                          type=validate_prompt,
-                          prompt_suffix='? ')
-    # Get the correct option from the app options list
-    chosen = app.options[choice - 1]
+    choice = prompt_user()
     click.echo()
     # Ask for confirmation.
-    confirm_str = '  {}'.format(
-        click.style(chosen['text'], bold=True, fg='yellow'))
+    confirm_str = click.style(choice['text'], bold=True, fg='yellow')
     if click.confirm(confirm_str, default='yes', show_default=True):
-        try:
-            chosen['callback']()
-        except TypeError as e:
-            msg = 'Error while trying to run option {} function!\n'\
-                  '>>> {}'.format(choice, e)
-            click.secho(msg, fg='red', bold=True)
-        click.pause()
+        execute_choice(choice)
 
+    click.pause()
     menu()
 
 

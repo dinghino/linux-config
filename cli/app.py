@@ -153,7 +153,10 @@ class AppManager(object):
             return idx >= 0 and idx < len(self.options)
 
         idx = idx if is_number() and in_range() else len(self.options)
-        self.options.insert(idx, {'text': text, 'callback': callbackFn})
+        self.options.insert(idx, {
+            'text': text,
+            'callback': callbackFn,
+        })
 
         # add extra option properties
         for k, v in kwargs.items():
