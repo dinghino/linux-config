@@ -60,6 +60,45 @@ class AppManager(object):
         for opt in self.options:
             opt['callback'] = self._generate_callback(opt)
 
+        self._read_scripts_folder()
+
+    def _read_scripts_folder(self):
+        def get_abs_path(fn):
+            return os.path.join(self.scripts_dir, fn)
+
+        def is_file(fn):
+            return os.path.isfile(get_abs_path(fn))
+
+        scripts_names = os.listdir(self.scripts_dir)
+        scripts = [get_abs_path(fn) for fn in scripts_names if is_file(fn)]
+
+        for script in scripts:
+            click.echo(script)
+            click.echo(self._read_script_file(script))
+
+    def _read_script_file(self, filepath):
+        """
+        Read a script file from a <filepath> and extract all the commented
+        lines
+        """
+
+        # TODO: Use this and _read_scripts_folder to process the scripts and
+        # automatically generate and update state.json with currently available
+        # scripts.
+        # The function should remove options that don't have the script available
+        # and add the new options found.
+        # All the scripts will have to contain some sort of header that will
+        # describe the option TEXT and other metainformation that could be
+        # useful (i.e. desired options list position, text color etc...)
+
+        retval = ""
+        with open(filepath) as fo:
+            for line in fo:
+                if line[0] == '#':  # take only comments
+                    retval += line
+
+        return retval
+
     def get_script_path(self, filename):
         """
         Return the absolute path to the script file inside the scripts folder.
@@ -102,7 +141,7 @@ class AppManager(object):
 
         return cb
 
-    def add_option(self, text, callback, idx=False, *args, **kwargs):
+    def add_option(self, text, callbackFn, idx=False, *args, **kwargs):
         """
         Add one option to the options for the app menu.
         If a `idx` is given, the item will be put at that position
@@ -114,7 +153,7 @@ class AppManager(object):
             return idx >= 0 and idx < len(self.options)
 
         idx = idx if is_number() and in_range() else len(self.options)
-        self.options.insert(idx, {'text': text, 'callback': callback})
+        self.options.insert(idx, {'text': text, 'callback': callbackFn})
 
         # add extra option properties
         for k, v in kwargs.items():
