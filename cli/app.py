@@ -122,6 +122,12 @@ class AppManager(object):
 
         return idx
 
+    def list_options(self, private=True):
+        opts = self._options if private else self.options
+        click.clear()
+        for i, opt in enumerate(opts):
+            click.echo('{i} - {n} '.format(i=i + 1, n=opt['text']))
+
     def find_option_idx(self, value, key='text'):
         """
         Return an option index inside the app options using a key-value pair.
