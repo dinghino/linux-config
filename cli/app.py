@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 Application manager.
+Takes care of running scripts correctly, keeping track of paths and of the
+application state through persistent data.
 """
 import copy
 import json
@@ -14,6 +16,8 @@ from datetime import datetime
 import click
 
 APP_FOLDER_NAME = 'cli'
+APP_STATE_FILENAME = 'state.json'
+SCRIPTS_FOLDER = 'scripts'
 
 
 class AppManager(object):
@@ -29,9 +33,9 @@ class AppManager(object):
         # this file is in <root>/cli/ so we need to walk up one
         self._root_dir = os.path.dirname(self._app_dir)
         # folder where the scripts are
-        self.scripts_dir = os.path.join(self._root_dir, 'scripts')
+        self.scripts_dir = os.path.join(self._root_dir, SCRIPTS_FOLDER)
         # path to the app state file (state.json)
-        self._app_state_path = os.path.join(self._app_dir, 'state.json')
+        self._app_state_path = os.path.join(self._app_dir, APP_STATE_FILENAME)
         # verbosity level, for logging and stuff
         self.verbose = 0
         # root of the project, so the program can access files
@@ -42,13 +46,15 @@ class AppManager(object):
         self.setup_done = False
         # state of the application functionalities, used to generate menu
         # and do callbacks.
-        # self._options is exactly the data stored in the json, that have to
+        # self._app_state is exactly the data stored in the json, that have to
         # be kept as it is and updated only with serializable key-values,
-        # while the public `options` can be worked on at runtime
+        # `public` .options,  isexposed for client purposes but that won't be
+        # saved on the persistent storage and can be worked on at runtime
         # (setting callback functions, adding other options etc...)
         with click.open_file(self._app_state_path) as fo:
-            self._options = json.load(fo)
-            self.options = copy.deepcopy(self._options)
+            self._app_state = json.load(fo)
+        self._options = self._app_state['options']
+        self.options = copy.deepcopy(self._options)
 
         # setup the callbacks
         for opt in self.options:
@@ -124,8 +130,8 @@ class AppManager(object):
 
     def _find_json_option_idx(self, value, key='text'):
         """
-        Find the index of the option inside the stored unmodified data recovered
-        by the state.json file.
+        Find the index of the option inside the stored unmodified data
+        recovered by the state.json file.
         """
         return self._find_option_idx(value, key, self._options)
 
@@ -174,7 +180,9 @@ class AppManager(object):
             # for a non persistent option. we don't care about the case and
             # fail silently.
             pass
+        self._update_state_file()
 
+    def _update_state_file(self):
         # dump the updated private _options to the file.
         with click.open_file(self._app_state_path, 'w', atomic=True) as fo:
-            json.dump(self._options, fo, indent=4)
+            json.dump(self._app_state, fo, indent=4)

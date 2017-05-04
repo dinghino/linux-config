@@ -82,7 +82,8 @@ def get_gh_login(app):
 def menu(app):
     validate_prompt = click.IntRange(1, len(app.options))
 
-    def echo_menu_row(i, text, installed=None, show_status=True, *args, **kwargs):
+    def echo_menu_row(i, text, installed=None, show_status=True,
+                      *args, **kwargs):
         """ print a row of the main menu with status. """
         inst = installed  # shortcut
 
