@@ -8,6 +8,35 @@ from app import AppManager
 pass_app = click.make_pass_decorator(AppManager, ensure=True)
 
 
+def _setup_app_context(app):
+    """
+    Add testing functionalities and other stuff that will be removed later on
+    """
+    def launch_test_script(opt_idx):
+        # TODO: Remove once done testing stuff. Function callback for
+        # 'Test script call' option
+        def cb():
+            click.secho('Launching test script...', bold=True, bg='red')
+            result = app.execute(
+                app.get_script_path('apt.exists.sh python3.6'),
+                cb=app.update_option, idx=opt_idx
+            )
+            click.secho(result, fg='cyan', bold=True)
+        return cb
+
+    # Add cli specific functionalities to the options from the app
+    app.add_option('Setup', setup, 0)
+
+    idx = len(app.options)
+    app.add_option(click.style('Test script call', bold=True),
+                   launch_test_script(idx))
+    # TODO: pass a callback view to allow the user to type a command that the
+    # app will .execute(), allowing using commands directly from the app.
+    app.add_option(
+        click.style('Execute command', fg='blue'),
+        None, show_status=False)
+
+
 def echo_header(text):
     """ Echo a stylish header, 79 characters long. """
     txtlen = len(text)
@@ -99,8 +128,6 @@ def menu(app):
         try:
             chosen['callback']()
         except TypeError as e:
-            # import pdb
-            # pdb.set_trace()
             msg = 'Error while trying to run option {} function!\n'\
                   '>>> {}'.format(choice, e)
             click.secho(msg, fg='red', bold=True)
@@ -109,10 +136,11 @@ def menu(app):
     menu()
 
 
-@click.group()
+@click.group(invoke_without_command=True)
 @click.option('-v', '--verbose', count=True, default=0)
 @pass_app
-def cli(app, verbose):
+@click.pass_context
+def cli(ctx, app, verbose):
     """
     Bootstrap application for linux system.
     Allows management of basic dependecies and application for developing in
@@ -125,29 +153,8 @@ def cli(app, verbose):
     # Update configuration values
     app.verbose = verbose
 
-    def launch_test_script(opt_idx):
-        # TODO: Remove once done testing stuff. Function callback for
-        # 'Test script call' option
-        def cb():
-            click.secho('Launching test script...', bold=True, bg='red')
-            result = app.execute(
-                app.get_script_path('apt.exists.sh python3.6'),
-                cb=app.update_option, idx=opt_idx
-            )
-            click.secho(result, fg='cyan', bold=True)
-        return cb
-
-    # Add cli specific functionalities to the options from the app
-    app.add_option('Setup', setup, 0)
-
-    idx = len(app.options)
-    app.add_option(click.style('Test script call', bold=True),
-                   launch_test_script(idx))
-    # TODO: pass a callback view to allow the user to type a command that the
-    # app will .execute(), allowing using commands directly from the app.
-    app.add_option(
-        click.style('Execute command', fg='blue'),
-        None, show_status=False)
+    # add some configuration for testing and stuff to the app context
+    _setup_app_context(app)
 
     # Quit option should be last
     app.add_option(
@@ -155,15 +162,27 @@ def cli(app, verbose):
         lambda: exit(0),
         show_status=False)
 
+    # If no command is passed execute the start automatically
+    if ctx.invoked_subcommand is None:
+        ctx.invoke(start)
+
 
 @cli.command()
 @pass_app
 def start(app):
     """ Interactive mode with menu and stuff. """
-
     # if not app.setup_done:
     #     setup()
     menu()
+
+
+@cli.command('install')
+@click.argument('script')
+@pass_app
+def install_directly(app, script):
+    """Run an install script."""
+    click.echo('Installing: {}'.format(script))
+    click.echo('Fake for now...')
 
 
 if __name__ == '__main__':
