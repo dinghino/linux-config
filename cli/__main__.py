@@ -9,7 +9,9 @@ import six
 cwd = os.path.dirname(__file__)
 reqfp = os.path.join(cwd, 'requirements.txt')
 with open(reqfp) as fo:
-    requirements = fo.read().split('\n')[:-1]  # last is an empty string
+    requirements = fo.read().split('\n')
+    if requirements[-1] == '':  # last could be a newline char. check and remove
+        requirements = requirements[:-1]
 
 
 def install_if_not_found(package):
