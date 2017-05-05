@@ -109,13 +109,26 @@ def menu(app):
         return app.options[choice - 1]
 
     def execute_choice(choice):
+        output, error = None, None
         try:
-            choice['callback']()
+            output, error = choice['callback']()
+        except TypeError:
+            # FIXME: This pass is due to the missing callback function
+            # normalization, meaning that we have to be sure the the callback
+            # returns a tuple (likely with function output and errors), or else
+            # it will fail while unpacking the return value. This except clause
+            # allows to bypass it
+            error = 'Callback for `{}` has issues.'.format(choice['text'])
         except Exception as e:
+            click.echo(e)
             msg = 'Error while trying to run option `{}` function!\n'\
                   '>>> {}\n'.format(choice['text'], e, choice)
             click.secho(msg, fg='red', bold=True)
 
+        if output:
+            click.secho(output, fg='green')
+        elif error:
+            click.secho(error, fg='red')
     # Execution time!
 
     click.clear()
@@ -130,6 +143,10 @@ def menu(app):
     click.echo()
     # Ask for confirmation.
     confirm_str = click.style(choice['text'], bold=True, fg='yellow')
+    descr = choice.get('description')
+    if descr:
+        click.echo(descr)
+    click.echo()
     if click.confirm(confirm_str, default='yes', show_default=True):
         execute_choice(choice)
 
