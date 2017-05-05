@@ -15,11 +15,11 @@ with open(reqfp) as fo:
 def install_if_not_found(package):
     try:
         importlib.import_module(package)
-        six.print_('- %s ok...' % package)
+        six.print_('= %s ok...' % package)
     except ImportError:
-        six.print_('!! %s not found.  installing...')
+        six.print_('- %s not found.  installing...')
         pip.main(['install', package, '-no-cache-dir'])
-        six.print_('  installed.')
+        six.print_('+ installed.')
         # update packages cache
         reload(site)
     finally:
