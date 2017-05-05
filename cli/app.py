@@ -19,6 +19,18 @@ APP_FOLDER_NAME = 'cli'
 APP_STATE_FILENAME = 'state.json'
 SCRIPTS_FOLDER = 'scripts'
 
+# marker for script title inside the scripts
+OPT_SHEBANG_TITLE = '#!title: '
+# delimiters for the script description paragraph
+OPT_SHEBANG_DESCR_IN = '#!description'
+OPT_SHEBANG_DESCR_OUT = '#!end-description'
+# if present the app wil ignore the script for what concerns options and direct
+# execution. script can still be used from other script or directly, os this
+# can be useful for utility scripts, tests or work in progress
+OPT_SHEBANG_SKIP = '#!~SKIP'
+# if present the app will store the script data inside the persistent state
+OPT_SHEBANG_SAVE = '#!~SAVE'
+
 
 class AppManager(object):
     """
@@ -60,50 +72,7 @@ class AppManager(object):
         for opt in self.options:
             opt['callback'] = self._generate_callback(opt)
 
-        self._read_scripts_folder()
-
-    def _read_scripts_folder(self):
-        def get_abs_path(fn):
-            return os.path.join(self.scripts_dir, fn)
-
-        def is_file(fn):
-            return os.path.isfile(get_abs_path(fn))
-
-        scripts_names = os.listdir(self.scripts_dir)
-        scripts = [get_abs_path(fn) for fn in scripts_names if is_file(fn)]
-
-        for script in scripts:
-            click.echo(script)
-            click.echo(self._read_script_file(script))
-
-    def _read_script_file(self, filepath):
-        """
-        Read a script file from a <filepath> and extract all the commented
-        lines
-        """
-
-        # TODO: Use this and _read_scripts_folder to process the scripts and
-        # automatically generate and update state.json with currently available
-        # scripts.
-        # The function should remove options that don't have the script available
-        # and add the new options found.
-        # All the scripts will have to contain some sort of header that will
-        # describe the option TEXT and other metainformation that could be
-        # useful (i.e. desired options list position, text color etc...)
-
-        retval = ""
-        with open(filepath) as fo:
-            for line in fo:
-                if line[0] == '#':  # take only comments
-                    retval += line
-
-        return retval
-
-    def get_script_path(self, filename):
-        """
-        Return the absolute path to the script file inside the scripts folder.
-        """
-        return os.path.join(self.scripts_dir, filename)
+        self.process_scripts_folder()
 
     def execute(self, script, cb=lambda: None, *args, **kwargs):
         """
@@ -116,14 +85,113 @@ class AppManager(object):
         # has some kind of flag for a shell command, or otherwise
         # assume that it's the script's name and try to evaluate its path.
         _execute = shlex.split(script)
-        p = subprocess.Popen(_execute, stdout=subprocess.PIPE)
+        # p = subprocess.Popen(_execute, stdout=subprocess.PIPE)
+        p = subprocess.Popen(
+            _execute, shell=True, stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        )
         output, error = p.communicate()
         output = output.decode('utf-8')
+        error = error.decode('utf-8')
+
         try:
             cb(result=output, *args, **kwargs)
         except TypeError:  # not callable, maybe?
             pass
-        return output
+        return output, error
+
+    # #########################################
+    # Scripts reading and parsing
+
+    def process_scripts_folder(self):
+        """
+        Walk /scripts/ directory and parse all the scripts (*.sh), generating
+        and updating available app options.
+        """
+        def abspath(fn):
+            return os.path.join(self.scripts_dir, fn)
+
+        def is_file(fn):
+            return os.path.isfile(abspath(fn))
+
+        filenames = os.listdir(self.scripts_dir)
+        # get a list of absolute path to the files inside self.scripts_dir if
+        # the file ends with .sh - assume it's a bash script
+        scripts = [
+            abspath(fn) for fn in filenames
+            if is_file(fn) and fn.endswith('.sh')
+        ]
+
+        for i, script in enumerate(scripts):
+            title, description, path, skip = self.parse_script_metadata(script)
+            if skip:
+                continue
+
+            def opt_callback():
+                return self.execute(path)
+
+            self.add_option(title, opt_callback, i, description=description)
+
+    def parse_script_metadata(self, filepath):
+        """
+        Read a script file from a < filepath > and extract all the commented
+        lines
+
+        :returns: (<title>, <description>, <abspath>)
+        """
+
+        # TODO: Use this and process_scripts_folder to process the scripts and
+        # automatically generate and update state.json with currently available
+        # scripts.
+        # The function should remove options that don't have the script available
+        # and add the new options found.
+        # All the scripts will have to contain some sort of header that will
+        # describe the option TEXT and other metainformation that could be
+        # useful (i.e. desired options list position, text color etc...)
+
+        title = 'No Title'
+        description = 'No Description available'
+        skip = False
+
+        def get_title(line):
+            return line.strip().split('#!title: ')[1]
+
+        with open(filepath) as fo:
+            is_description = False
+            for line in fo:
+                if line.startswith(OPT_SHEBANG_SKIP):
+                    # If the line starts with the SKIP shebang the script will
+                    # be set to be skipped in further processing and the loop
+                    # will stop (useless parse more data since we won't use it)
+                    skip = True
+                    break
+
+                # When true the loop will stop to parse the description
+                if line.startswith(OPT_SHEBANG_DESCR_OUT):
+                    is_description = False
+
+                if is_description:
+                    try:
+                        description += line.split('# ', 1)[1]
+                    except IndexError:  # Blank line
+                        description += '\n'
+                    continue
+
+                if line.startswith(OPT_SHEBANG_TITLE):
+                    title = get_title(line)
+
+                elif line.startswith(OPT_SHEBANG_DESCR_IN):
+                    # When true the loop will start to parse the description
+                    is_description = True
+                    description = ''
+
+        return (title, description.strip(), filepath, skip)
+
+    def get_script_path(self, filename):
+        """
+        Return the absolute path to the script file inside the scripts folder.
+        """
+        return os.path.join(self.scripts_dir, filename)
 
     def _generate_callback(self, opt):
         """
@@ -140,6 +208,8 @@ class AppManager(object):
             self.update_option(opt['text'])
 
         return cb
+    # #########################################
+    # Options handling
 
     def add_option(self, text, callbackFn, idx=False, *args, **kwargs):
         """
@@ -172,7 +242,7 @@ class AppManager(object):
 
     def find_option_idx(self, value, key='text'):
         """
-        Return an option index inside the app options using a key-value pair.
+        Return an option index inside the app options using a key - value pair.
         """
         return self._find_option_idx(value, key, self.options)
 
