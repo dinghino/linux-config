@@ -1,3 +1,5 @@
+#!/bin/bash
+#!~SKIP
 BOLD=$(tput bold)
 NORMAL=$(tput sgr0)
 

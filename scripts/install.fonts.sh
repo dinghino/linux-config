@@ -1,8 +1,15 @@
 #!/bin/bash
 
+#!title: Install Nerd Fonts
+#!description
 # Install some fonts that allows ligatures or are patched with icons and stuff.
 # These fonts are used in some software configuration present in this bootstrap
 # such as configs for tilix and visual studio code.
+# Installed fonts:
+# * Inconsolata Nerd Font
+# * Monofur Nerd Font
+# * FiraCode
+#!end-description
 source ./utils.sh
 
 # Install fonts
