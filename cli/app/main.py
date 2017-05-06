@@ -43,7 +43,7 @@ class AppManager(object):
         # absolute path to the root folder of the application. Uses os.path
         # instead of pathlib to try and mantain python 2.7 compatibility.
         # this file is in <root>/cli/ so we need to walk up one
-        self._root_dir = os.path.dirname(self._app_dir)
+        self._root_dir = os.path.dirname(os.path.dirname(self._app_dir))
         # folder where the scripts are
         self.scripts_dir = os.path.join(self._root_dir, SCRIPTS_FOLDER)
         # path to the app state file (state.json)

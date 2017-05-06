@@ -139,9 +139,6 @@ def cli(ctx, app, verbose):
     # Update configuration values
     app.verbose = verbose
 
-    # add some configuration for testing and stuff to the app context
-    _setup_app_context(app)
-
     # If no command is passed execute the start automatically
     if ctx.invoked_subcommand is None:
         ctx.invoke(start)
