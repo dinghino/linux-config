@@ -8,12 +8,12 @@ import copy
 import json
 import os
 import shlex
-import six
 import subprocess
 import time
 from datetime import datetime
 
 import click
+import six
 
 APP_FOLDER_NAME = 'cli'
 APP_STATE_FILENAME = 'state.json'
