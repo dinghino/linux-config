@@ -6,6 +6,10 @@ import click
 from app import AppManager
 
 pass_app = click.make_pass_decorator(AppManager, ensure=True)
+# Map some cli-specific shortcuts to the keyboard
+CLI_ACTIONS = {
+    'q': lambda: exit(0)
+}
 
 
 def _setup_app_context(app):
@@ -73,7 +77,12 @@ def get_gh_login(app):
 
 @pass_app
 def menu(app):
-    validate_prompt = click.IntRange(1, len(app.options))
+    # Choices available for the user are numbers within the range of 1 and the
+    # number of options, PLUS the keys of the CLI specific actions
+    available_prompt_choices = range(1, len(app.options))
+    available_prompt_choices = map(lambda x: str(x), available_prompt_choices)
+    available_prompt_choices.extend(CLI_ACTIONS.keys())
+    validate_prompt = click.Choice(available_prompt_choices)
 
     def echo_menu_row(i, text, installed=None, show_status=True,
                       *args, **kwargs):
@@ -97,16 +106,18 @@ def menu(app):
         date_ = '({})'.format(click.style(inst, dim=True)) if dispclr else ''
 
         # Print out the created row
-        click.echo('{i}{s}{t}{d}'.format(
-            i=idx, t=txt, d=date_, s=status))
+        click.echo('{i}{s}{t}{d}'.format(i=idx, t=txt, d=date_, s=status))
 
-    def prompt_user():
-        # Get the user choice
-        choice = click.prompt('What to do next',
-                              type=validate_prompt,
-                              prompt_suffix='? ')
-        # Get the correct option from the app options list
-        return app.options[choice - 1]
+    def handle_chose_option(choice):
+        click.echo()
+        # Ask for confirmation.
+        confirm_str = click.style(choice['text'], bold=True, fg='yellow')
+        descr = choice.get('description')
+        if descr:
+            click.echo(descr)
+        click.echo()
+        if click.confirm(confirm_str, default='yes', show_default=True):
+            execute_choice(choice)
 
     def execute_choice(choice):
         output, error = None, None
@@ -134,21 +145,32 @@ def menu(app):
     click.clear()
     echo_header('One bootstrap to rule them all')
     click.echo()
+
     # Generate the menu
     for i, opt in enumerate(app.options):
         echo_menu_row(i, **opt)
     click.echo()
 
-    choice = prompt_user()
-    click.echo()
-    # Ask for confirmation.
-    confirm_str = click.style(choice['text'], bold=True, fg='yellow')
-    descr = choice.get('description')
-    if descr:
-        click.echo(descr)
-    click.echo()
-    if click.confirm(confirm_str, default='yes', show_default=True):
-        execute_choice(choice)
+    choice = click.prompt(
+        'What to do next', type=validate_prompt, prompt_suffix='? ')
+
+    try:
+        choice = app.options[int(choice) - 1]
+        handle_chose_option(choice)
+    except ValueError:
+        # `choice` can't be converted to integer, so it's not a menu valid
+        # app option. try with cli specific command that, if created right
+        # should not raise anything.
+        try:
+            CLI_ACTIONS[choice.lower()]()
+        except TypeError as e:
+            # choice doesn't map to a callable
+            click.secho(str(e), fg='yellow')
+        except Exception as e:
+            # Everything else that could be specific to the callback func.
+            # We don't want the program to crash, so catch everything, log and
+            # go ahead
+            click.secho(str(e), fg='red')
 
     click.pause()
     menu()
@@ -173,12 +195,6 @@ def cli(ctx, app, verbose):
 
     # add some configuration for testing and stuff to the app context
     _setup_app_context(app)
-
-    # Quit option should be last
-    app.add_option(
-        click.style('Quit', fg='yellow'),
-        lambda: exit(0),
-        show_status=False)
 
     # If no command is passed execute the start automatically
     if ctx.invoked_subcommand is None:
