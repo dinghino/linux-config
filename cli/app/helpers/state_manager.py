@@ -186,3 +186,28 @@ class StateManager(object):
         recovered by the state.json file.
         """
         return self._find_option_idx(value, key, self._options)
+
+
+class Option(object):
+    """
+    State/Application options handle the application options generated while
+    parsing the scripts folder or the state persistent data.
+    """
+
+    def __init__(self, ctx, title, description, script_path, installed=None):
+        self.title = title
+        self.description = description
+        self.script = script_path
+        self.installed = installed
+
+        self.ctx = ctx
+
+    def execute(self):
+        """Execute the option script or function. """
+        pass
+
+    def update(self):
+        """Update the options value and execution time. """
+        pass
+
+    def __repr__(self):

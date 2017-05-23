@@ -160,7 +160,8 @@ def start(app):
     Entry point for the cli application. takes care of setting up things
     locally and launching the main menu for the first time.
     """
-
+    import pdb
+    pdb.set_trace()
     menu()
 
 
