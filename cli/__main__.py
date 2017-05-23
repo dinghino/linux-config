@@ -10,7 +10,7 @@ cwd = os.path.dirname(__file__)
 reqfp = os.path.join(cwd, 'requirements.txt')
 with open(reqfp) as fo:
     requirements = fo.read().split('\n')
-    if requirements[-1] == '':  # last could be a newline char. check and remove
+    if requirements[-1] == '':  # last could be a \n char. check and remove
         requirements = requirements[:-1]
 
 

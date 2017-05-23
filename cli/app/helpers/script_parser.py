@@ -20,11 +20,12 @@ class ScriptParser(object):
     OPT_DESCR_IN = '#!description'
     #: Delimit the end of the description paragraph
     OPT_DESCR_OUT = '#!end-description'
-    #: if present the app wil ignore the script for what concerns options and direct
-    #: execution. script can still be used from other script or directly, os this
-    #: can be useful for utility scripts, tests or work in progress
+    #: if present the app wil ignore the script for what concerns options and
+    #: direct execution. script can still be used from other script or
+    #: directly, os this can be useful for utility scripts, tests or work
+    #: in progress
     OPT_SKIP = '#!~SKIP'
-    #: if present the app will store the script data inside the persistent state
+    #: if present the app will save the script data inside the persistent state
     OPT_SAVE = '#!~SAVE'
 
     def __init__(self, ctx):
@@ -38,8 +39,8 @@ class ScriptParser(object):
             folder_name (str): Absolute path pointing to the folder containing
                 the scripts to parse.
 
-            state (:any:`StateManager`): StateManager instance to load the parsed
-                options into.
+            state (:any:`StateManager`): StateManager instance to load the
+                parsed options into.
 
         """
         def abspath(fn):
@@ -82,15 +83,16 @@ class ScriptParser(object):
                 * title (`str`): Script title
                 * description (`str`): Summary description
                 * script_path (`str`): Asbolute path to the script file
-                * skip (`bool`): wether the script should be skipped for options
-                  and other application functionalities (i.e. an utils.sh)
+                * skip (`bool`): wether the script should be skipped for
+                  options and other application functionalities
+                  (i.e. an utils.sh)
         """
 
         # TODO: Use this and process_scripts_folder to process the scripts and
         # automatically generate and update state.json with currently available
         # scripts.
-        # The function should remove options that don't have the script available
-        # and add the new options found.
+        # The function should remove options that don't have the script
+        # available and add the new options found.
         # All the scripts will have to contain some sort of header that will
         # describe the option TEXT and other metainformation that could be
         # useful (i.e. desired options list position, text color etc...)

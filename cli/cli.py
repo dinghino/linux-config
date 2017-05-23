@@ -143,8 +143,7 @@ def cli(ctx, app, verbose):
     Python 3.6, node.js etc.
 
     It also manages some system configuration and basic application such as
-    terminal emulators (tilix), vim (with optionak configuration), visual studio
-    code...
+    terminal emulators (tilix), vim (with optionak configuration), vs code...
     """
     # Update configuration values
     app.verbosity = verbose
