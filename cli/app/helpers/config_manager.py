@@ -14,14 +14,15 @@ class Config(object):
 
     Attributes:
         APP_FOLDER_NAME (str): Name of the application folder
-        APP_STATE_FILENAME (str): Name of the file where all the persistent data is
-            stored. default location is inside the `app/` folder.
-        SCRIPTS_FOLDER (str): Name of the folder that contains the scripts run by the
-            application. Path is relative to the project root.
+        APP_STATE_FILENAME (str): Name of the file where all the persistent
+            data is stored. default location is inside the `app/` folder.
+        SCRIPTS_FOLDER (str): Name of the folder that contains the scripts run
+            by the application. Path is relative to the project root.
 
         app_dir (str): absolute path to the python application folder
         root_dir (str): absolute path to the root of the whole program
-        scripts_dir (str): absolute path to the scripts folder (see :any:`SCRIPTS_FOLDER`)
+        scripts_dir (str): absolute path to the scripts folder
+            (see :any:`SCRIPTS_FOLDER`)
         state_path (str): absolute path to the persistent state file
 
     """

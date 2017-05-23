@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import copy
-import os
 import json
 
 import arrow
 import click
+import six
 
 
 class StateManager(object):
@@ -76,12 +76,15 @@ class StateManager(object):
 
         return self.options
 
-    def save(self, path):
+    def save(self, path=None):
         """
         Dump the current ``_state`` attribute into the given path.
+
         Args:
-            path (str): absolute path to json file
+            path (str, optional): absolute path to json file.
+                If not provided the path provided on `init` will be used.
         """
+        path = path or self.state_path
         with click.open_file(path, 'w', atomic=True) as fo:
             json.dump(self._state, fo, indent=4)
 
@@ -152,7 +155,7 @@ class StateManager(object):
             pass
 
         # dump the updated private _options to the file.
-        self.save(self.state_path)
+        self.save()
 
     # ##############################
     # Options lookup
