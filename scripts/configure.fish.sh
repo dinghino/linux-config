@@ -1,4 +1,5 @@
 #!/usr/bin/fish
+#!~SAVE
 
 #!title: Configure fish shell
 #!description

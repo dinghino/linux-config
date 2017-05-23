@@ -2,6 +2,9 @@
 """
 CLI for the rule them all program
 """
+import datetime
+
+import arrow
 import click
 from app import AppManager
 
@@ -25,10 +28,10 @@ def echo_header(text):
 def menu(app):
     # Choices available for the user are numbers within the range of 1 and the
     # number of options, PLUS the keys of the CLI specific actions
-    available_prompt_choices = range(1, len(app.options))
-    available_prompt_choices = map(lambda x: str(x), available_prompt_choices)
-    available_prompt_choices.extend(CLI_ACTIONS.keys())
-    validate_prompt = click.Choice(available_prompt_choices)
+    prompt_choices = range(1, len(app.options))
+    prompt_choices = list(map(lambda x: str(x), prompt_choices))
+    prompt_choices.extend(CLI_ACTIONS.keys())
+    validate_prompt = click.Choice(prompt_choices)
 
     def echo_menu_row(i, text, installed=None, show_status=True,
                       *args, **kwargs):
@@ -49,6 +52,13 @@ def menu(app):
         # argument, allowing a visual feedback on what's done already.
         dispclr = inst and show_status
         txt = '{:<35}'.format(click.style(text, fg='green' if dispclr else ''))
+        # humanize datetime
+        try:
+            inst = arrow.Arrow.utcfromtimestamp(inst).humanize()
+        except Exception as e:
+            # installed is not a parsable string. maybe is missing?
+            # don't care.
+            pass
         date_ = '({})'.format(click.style(inst, dim=True)) if dispclr else ''
 
         # Print out the created row
@@ -69,13 +79,14 @@ def menu(app):
         output, error = None, None
         try:
             output, error = choice['callback']()
-        except TypeError:
+        except TypeError as e:
             # FIXME: This pass is due to the missing callback function
             # normalization, meaning that we have to be sure the the callback
             # returns a tuple (likely with function output and errors), or else
             # it will fail while unpacking the return value. This except clause
             # allows to bypass it
-            error = 'Callback for `{}` has issues.'.format(choice['text'])
+            error = 'Callback for `{}` has issues.\n{}'.format(
+                choice['text'], e)
         except Exception as e:
             click.echo(e)
             msg = 'Error while trying to run option `{}` function!\n'\
@@ -137,7 +148,7 @@ def cli(ctx, app, verbose):
     code...
     """
     # Update configuration values
-    app.verbose = verbose
+    app.verbosity = verbose
 
     # If no command is passed execute the start automatically
     if ctx.invoked_subcommand is None:

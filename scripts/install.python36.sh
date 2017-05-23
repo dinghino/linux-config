@@ -1,4 +1,6 @@
 #!/bin/bash
+#!~SAVE
+
 #!title: Install Python 3.6
 #!description
 # Install Python 3.6 and pip3 through aptitude

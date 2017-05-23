@@ -1,4 +1,5 @@
 #!/bin/bash
+#!~SAVE
 
 #!title: Install Nerd Fonts
 #!description

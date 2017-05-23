@@ -1,1 +1,2 @@
-from main import AppManager
+# -*- coding: utf-8 -*-
+from app.main import AppManager

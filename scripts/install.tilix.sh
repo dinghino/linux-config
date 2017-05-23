@@ -1,4 +1,5 @@
-#!/bash/bin
+#!/bin/bash
+#!~SAVE
 
 #!title: Install Tilix
 #!description

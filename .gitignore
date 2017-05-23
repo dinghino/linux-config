@@ -7,3 +7,5 @@ __pycache__/
 *.pyc
 
 \.vscode/
+
+docs/_build_html/

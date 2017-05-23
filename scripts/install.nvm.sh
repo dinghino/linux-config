@@ -1,4 +1,6 @@
 #!/bin/bash
+#!~SAVE
+
 #!title: Install nvm
 #!description
 # Install NodeVersionManager for bash
