@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 """
 Helpers module implements classes for composing the main AppManager object
 as well as utility functions to do some stuff.

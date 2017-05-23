@@ -1,3 +1,4 @@
+# flake8: noqa
 """
 This module contains discontinued and test functions and cli views that just
 mess the code, BUT that i want to keep for reference or future reimplementation

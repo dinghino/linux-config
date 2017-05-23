@@ -2,7 +2,6 @@
 """
 CLI for the rule them all program
 """
-import datetime
 
 import arrow
 import click

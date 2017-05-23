@@ -23,7 +23,7 @@ def install_if_not_found(package):
         pip.main(['install', package, '-no-cache-dir'])
         six.print_('+ installed.')
         # update packages cache
-        reload(site)
+        reload(site)  # noqa: F821
     finally:
         globals()[package] = importlib.import_module(package)
 
@@ -33,5 +33,5 @@ for package in requirements:
 
 
 # Execute the program
-from cli import cli
+from cli import cli  # noqa: E402
 cli()
