@@ -1,7 +1,11 @@
-#!/bash/bin
+#!/bin/bash
+#!~SAVE
 
+#!title: Install Tilix
+#!description
 # Install tilix (ex terminix) terminal emulator and get the latest dconf file
-# from the repository
+# from the repository to set it up properly
+#!end-description
 source ./utils
 
 printBold 'Installing tilix...'

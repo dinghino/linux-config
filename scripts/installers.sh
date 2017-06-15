@@ -1,5 +1,8 @@
-source ./utils.sh
+#!/bin/bash
 
+#!~SKIP
+
+source ./utils.sh
 CWD=$PWD
 
 function setupRepositories {
