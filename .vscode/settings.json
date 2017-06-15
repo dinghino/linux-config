@@ -1,0 +1,10 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "python.pythonPath": "/home/marvin/.virtualenvs/dotfiles/bin/python",
+    "python.venvPath": "/home/marvin/.virtualenvs/",
+    "python.linting.flake8Path": "/home/marvin/.virtualenvs/dotfiles/bin/flake8",
+    "python.linting.flake8Args": [
+        "--ignore-noqa"
+    ],
+    "python.linting.flake8Enabled": true
+}
