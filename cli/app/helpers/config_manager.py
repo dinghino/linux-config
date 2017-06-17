@@ -41,7 +41,8 @@ class Config(object):
         scripts_folder = scripts_folder or Config.SCRIPTS_FOLDER
 
         # Absolute path of the python application
-        self.app_dir = os.path.dirname(os.path.dirname(__file__))
+        self.app_dir = os.path.abspath(
+            os.path.dirname(os.path.dirname(__file__)))
         # Absolute path to the root folder of the application. Uses os.path
         # instead of pathlib to try and mantain python 2.7 compatibility.
         # this file is in <root>/cli/ so we need to walk up one
