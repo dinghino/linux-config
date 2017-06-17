@@ -65,8 +65,9 @@ class AppManager(object):
         # we may want to check if it's a path, if it points to something,
         # has some kind of flag for a shell command, or otherwise
         # assume that it's the script's name and try to evaluate its path.
-        _execute = shlex.split(script)
 
+        _execute = shlex.split(script)
+        _execute = self.config.scripts_dir.join(_execute)
         p = subprocess.Popen(
             _execute, shell=True, stdin=subprocess.PIPE,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE
