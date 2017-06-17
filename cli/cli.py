@@ -14,9 +14,9 @@ CLI_ACTIONS = {
 }
 
 
-def echo_header(text):
+def echo_header(text=None):
     """ Echo a stylish header, 79 characters long. """
-    txtlen = len(text)
+    txtlen = 2 * (len(text) // 2)
     border_len = (80 - txtlen - 2) // 2
     hborder = click.style('=' * border_len, fg='green')
     text = click.style(' {} '.format(text), bold=True)
@@ -70,6 +70,8 @@ def menu(app):
         descr = choice.get('description')
         if descr:
             click.echo(descr)
+        else:
+            click.echo('No description available.')
         click.echo()
         if click.confirm(confirm_str, default='yes', show_default=True):
             execute_choice(choice)
@@ -94,12 +96,14 @@ def menu(app):
 
         if output:
             click.secho(output, fg='green')
-        elif error:
+        if error:
             click.secho(error, fg='red')
     # Execution time!
 
     click.clear()
     echo_header('One bootstrap to rule them all')
+    click.echo('App controls:\n- {}uit'.format(click.style('Q', bold=True)))
+    echo_header('')
     click.echo()
 
     # Generate the menu
@@ -160,8 +164,6 @@ def start(app):
     Entry point for the cli application. takes care of setting up things
     locally and launching the main menu for the first time.
     """
-    import pdb
-    pdb.set_trace()
     menu()
 
 
