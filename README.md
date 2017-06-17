@@ -7,6 +7,9 @@ The general idea is to have a simple bash script that does all the fetching, clo
 
 For the moment it will contain all the instructions with command lines to setup manually everything and some configuration files (.vimrc, config.fish etc). Later on I'll try to create the script that will do everything by itself.
 
+# PYTHON_GUI
+> **Python GUI branch is broken and will be rewritten completely from scrap**
+
 ## Table of Contents
 
 * [Installation](#installation)
