@@ -192,6 +192,11 @@ class Option(object):
     """
     State/Application options handle the application options generated while
     parsing the scripts folder or the state persistent data.
+
+    Args:
+        ctx (:any`AppManager`): boh
+        title (str): Option title
+
     """
 
     def __init__(self, ctx, title, description, script_path, installed=None):
@@ -210,4 +215,10 @@ class Option(object):
         """Update the options value and execution time. """
         pass
 
+    def toJSON(self):
+        """Transform into a JSON to be stored in the persistent state."""
+        pass
+
+    # TODO: Complete repr method
     def __repr__(self):
+        return ''
