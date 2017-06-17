@@ -52,22 +52,20 @@ class ScriptParser(object):
         filenames = os.listdir(folder_name)
         # get a list of absolute path to the files inside self.scripts_dir if
         # the file ends with .sh - assume it's a bash script
-        scripts = [
+        scripts = sorted(
             abspath(fn) for fn in filenames
             if is_file(fn) and fn.endswith('.sh')
-        ]
+        )
 
         for i, script in enumerate(scripts):
-            title, description, path, skip = self.parse_script_metadata(
-                script)
+            title, desc, path, skip = self.parse_script_metadata(script)
             if skip:
                 continue
 
-            def opt_callback():
-                return self.ctx.execute(path)
+            def call_execution():
+                return self.ctx.execute(script)
 
-            state.add_option(title, opt_callback, i,
-                             description=description)
+            state.add_option(title, call_execution, i, description=desc)
 
     def parse_script_metadata(self, filepath):
         """
